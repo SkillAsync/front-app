@@ -1,4 +1,5 @@
 <template>
+    <headerComponent></headerComponent>
     <div class="publicaciones-container">
         <div class="publicacion">
             <h2>Nombre Usuario</h2>
@@ -8,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-
+import headerComponent from '@/components/layout/headerComponent.vue';
 </script>
 
 <style scoped>

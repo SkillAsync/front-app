@@ -1,4 +1,5 @@
 <template>
+    <headerComponent></headerComponent>
     <div class="content">
         <h1>
             Lo mejor es SkillAsync para hacer tu negocio
@@ -19,10 +20,12 @@
 </template>
 
 <script setup lang="ts">
+import headerComponent from '@/components/layout/headerComponent.vue';
+
 
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .content {
     background-color: #475f54;
     /* Cambia el color de fondo según tu diseño */
