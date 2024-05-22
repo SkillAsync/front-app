@@ -1,7 +1,7 @@
 <script setup lang="ts">
-
-//Import router-link
 import { RouterLink } from 'vue-router'
+import footerComponent from '@/components/layout/footerComponent.vue';
+import LinkButton from '@/components/buttons/LinkButton.vue'; 
 </script>
 <template>
 
@@ -14,8 +14,9 @@ import { RouterLink } from 'vue-router'
                         <div class="mb-12">
                             <h3 class="text-3xl font-extrabold">Inicio de Sesión</h3>
                             <p class="text-sm mt-4 ">¿No tienes una cuenta?
-                                <!-- registro redirection -->
-                                <RouterLink to="/registro" class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Regístrate aquí</RouterLink>
+                                <RouterLink to="/registro"
+                                    class="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">
+                                    Regístrate aquí</RouterLink>
                             </p>
                         </div>
                         <div>
@@ -125,10 +126,11 @@ import { RouterLink } from 'vue-router'
                     <img src="https://readymadeui.com/signin-image.webp" class="w-full h-full object-contain"
                         alt="login-image" />
                 </div>
+                <LinkButton redirection="/" />
             </div>
         </div>
     </div>
-
+    <footerComponent />
 </template>
 
 

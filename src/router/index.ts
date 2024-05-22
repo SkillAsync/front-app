@@ -8,7 +8,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       meta: {
-        title: 'Inicio',
+        title: 'Inicio'
       },
       component: HomeView
     },
@@ -16,7 +16,7 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       meta: {
-        title: 'Iniciar sesión',
+        title: 'Iniciar sesión'
       },
       component: () => import('@/views/LoginView.vue')
     },
@@ -24,25 +24,17 @@ const router = createRouter({
       path: '/registro',
       name: 'register',
       meta: {
-        title: 'Registro',
+        title: 'Registro'
       },
       component: () => import('@/views/RegisterView.vue')
     },
     {
-      path: '/publicaciones',
-      name: 'publications',
+      path: '/freelancers',
+      name: 'freelancers',
       meta: {
-        title: 'Publicaciones',
+        title: 'Freelancers'
       },
-      component: () => import('@/views/PublicationsView.vue')
-    },
-    {
-      path: '/usuarios',
-      name: 'users',
-      meta: {
-        title: 'Usuarios',
-      },
-      component: () => import('@/views/UsersView.vue')
+      component: () => import('@/views/FreelancersView.vue')
     }
   ]
 })
