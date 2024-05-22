@@ -6,10 +6,12 @@
             <img src="../imgs/jack.jpg">
         </div>
     </div>
+    <footerComponent></footerComponent>
 </template>
 
 <script setup lang="ts">
 import headerComponent from '@/components/layout/headerComponent.vue';
+import footerComponent from '@/components/layout/footerComponent.vue';
 </script>
 
 <style scoped>
