@@ -20,6 +20,24 @@ const crearUsuario(nombre, apellido, email, contraseña, movil, direccion, ciuda
 }
 }
 */
+/*
+Posible query: 
+mutation CreateUser {
+    createUser(
+        input: {
+            first_name: null
+            last_name: null
+            email: null
+            password: null
+            phone_country: null
+            phone: null
+            country: null
+            city: null
+            address: null
+        }
+    )
+}
+*/
 </script>
 
 <template>
@@ -32,12 +50,8 @@ const crearUsuario(nombre, apellido, email, contraseña, movil, direccion, ciuda
             src="https://storage.googleapis.com/devitary-image-host.appspot.com/15846435184459982716-LogoMakr_7POjrN.png"
             class="w-32 mx-auto" />
         </div>
-        <div class="mt-12 flex flex-col items-center">
-          <h1 class="text-2xl xl:text-3xl font-extrabold">
-            Regístrate
-          </h1>
-          <div class="w-full flex-1 mt-8">
-            <div class="flex flex-col items-center">
+        <!--Registro de git y eso
+         <div class="flex flex-col items-center">
               <button
                 class="w-full max-w-xs font-bold shadow-sm rounded-lg py-3 bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline">
                 <div class="bg-white p-2 rounded-full">
@@ -74,18 +88,32 @@ const crearUsuario(nombre, apellido, email, contraseña, movil, direccion, ciuda
                 </span>
               </button>
             </div>
-
-            <div class="my-12 border-b text-center">
+             <div class="my-12 border-b text-center">
               <div
                 class="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
                 O regístrate con tu correo electrónico
               </div>
             </div>
-
+        -->
+        <div class="mt-12 flex flex-col items-center">
+          <h1 class="text-2xl xl:text-3xl font-extrabold">
+            Regístrate
+          </h1>
+          <div class="w-full flex-1 mt-8">
+        
             <div class="mx-auto max-w-xs">
               <input
                 class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                type="email" placeholder="Nombre" />
+              <input
+                class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                type="email" placeholder="Apellido" />
+              <input
+                class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                 type="email" placeholder="Correo electrónico" />
+              <input
+                class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                type="email" placeholder="Dirección" />
               <input
                 class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                 type="password" placeholder="Contraseña" />
