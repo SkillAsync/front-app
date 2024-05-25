@@ -1,6 +1,25 @@
 <script setup>
 import footerComponent from '@/components/layout/footerComponent.vue';
 import LinkButton from '@/components/buttons/LinkButton.vue';
+import { useQuery } from '@vue/apollo-composable';
+import { gql } from 'graphql-tag';
+/*
+const crearUsuario(nombre, apellido, email, contraseña, movil, direccion, ciudad){
+  mutation CreateUser {
+    createUser(
+        input: {
+            first_name: nombre
+            last_name: apellido
+            email: email
+            password: contraseña
+            phone_country: movil
+            address: direccion
+            city: ciudad
+        }
+    )
+}
+}
+*/
 </script>
 
 <template>
