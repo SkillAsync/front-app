@@ -1,43 +1,65 @@
 <script setup>
-import footerComponent from '@/components/layout/footerComponent.vue';
-import LinkButton from '@/components/buttons/LinkButton.vue';
-import { useQuery } from '@vue/apollo-composable';
-import { gql } from 'graphql-tag';
-/*
-const crearUsuario(nombre, apellido, email, contraseña, movil, direccion, ciudad){
-  mutation CreateUser {
-    createUser(
-        input: {
-            first_name: nombre
-            last_name: apellido
-            email: email
-            password: contraseña
-            phone_country: movil
-            address: direccion
-            city: ciudad
-        }
-    )
+import { ref } from 'vue'
+import footerComponent from '@/components/layout/footerComponent.vue'
+import LinkButton from '@/components/buttons/LinkButton.vue'
+import { useQuery, useMutation } from '@vue/apollo-composable'
+import { gql } from 'graphql-tag'
+const user = ref({
+  first_name: '',
+  last_name: '',
+  email: '',
+  address: '',
+  password: ''
+})
+// Registro de componentes locales
+const components = {
+  footerComponent,
+  LinkButton
 }
-}
-*/
-/*
-Posible query: 
+
+// Mutación para crear un usuario
+const CREATE_USER_MUTATION = gql`
 mutation CreateUser {
-    createUser(
-        input: {
-            first_name: null
-            last_name: null
-            email: null
-            password: null
-            phone_country: null
-            phone: null
-            country: null
-            city: null
-            address: null
-        }
-    )
+  createUser(
+    input: {
+      first_name: "${user.value.first_name}"
+      last_name: "${user.value.last_name}"
+      email: "${user.value.email}"
+      password: "${user.value.password}"
+      address: "${user.value.address}"
+    }
+  ) {
+    uuid
+  }
 }
-*/
+`
+
+// Usar la mutación
+const { mutate: createUser } = useMutation(CREATE_USER_MUTATION)
+
+// Función para manejar la creación del usuario
+function handleCreateUser() {
+  createUser().then(response => {
+    console.log('User created with UUID:', response.data.createUser.uuid)
+  }).catch(error => {
+    console.error('Error creating user:', error)
+  })
+}
+
+// Consulta para obtener datos (cambiar por la consulta correcta si es necesario)
+const { result, loading, error } = useQuery(gql`
+query GetSomeData {
+  someData {
+    id
+    value
+  }
+}
+`)
+
+// Ejemplo de reactive user object (puedes usarlo si es necesario)
+
+
+
 </script>
 
 <template>
@@ -104,20 +126,20 @@ mutation CreateUser {
             <div class="mx-auto max-w-xs">
               <input
                 class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                type="email" placeholder="Nombre" />
+                type="email" placeholder="Nombre" v-model="first_name"/>
               <input
                 class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                type="email" placeholder="Apellido" />
+                type="email" placeholder="Apellido" v-model="last_name" />
               <input
                 class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                type="email" placeholder="Correo electrónico" />
+                type="email" placeholder="Correo electrónico" v-model="email" />
               <input
                 class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                type="email" placeholder="Dirección" />
+                type="email" placeholder="Dirección" v-model="addres" />
               <input
                 class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                type="password" placeholder="Contraseña" />
-              <button
+                type="password" placeholder="Contraseña" v-model="password" />
+              <button :click="handleCreateUser()"
                 class="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
                 <svg class="w-6 h-6 -ml-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                   stroke-linejoin="round">

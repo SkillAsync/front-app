@@ -2,7 +2,7 @@ module.exports = {
     client: {
         service: {
             name: 'my-app',
-            url: 'http://localhost:8080/graphql',
+            url: 'http://localhost:8086/graphql',
         },
         //Files processed by the extension
         includes: [
