@@ -95,7 +95,7 @@ const handleCreateUser = async () => {
                 </a>
               </p>
             </div>
-            <LinkButton redirection="/" />
+            <!--<LinkButton redirection="/" />-->
           </div>
         </div>
       </div>
