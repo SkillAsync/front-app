@@ -8,7 +8,7 @@ import App from './App.vue'
 import router from './router'
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:8000/graphql',
+    uri: 'http://localhost:8086/graphql',
 })
 
 const apolloClient = new ApolloClient({

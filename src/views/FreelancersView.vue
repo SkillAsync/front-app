@@ -1,64 +1,31 @@
 <script setup lang="ts">
 import headerComponent from '@/components/layout/headerComponent.vue';
 import footerComponent from '@/components/layout/footerComponent.vue';
-import { ref, watch } from 'vue';
-import { useQuery } from '@vue/apollo-composable';
-import { gql } from 'graphql-tag';
+import loaderComponent from '@/components/shared/loaderComponent.vue';
+import freenlacerCard from '@/components/cards/freenlacerCard.vue';
+import errorComponent from '@/components/shared/errorComponent.vue';
+import { useGetAllUsers } from '@/graphql/querys/useGetAllUsers'
 
-// Variable para guardar los usuarios
-const usuarios = ref([]);
+const { usuarios, loading, error } = useGetAllUsers()
 
-// Definir la consulta GraphQL
-const { result, loading, error } = useQuery(gql`
-query GetAllUsers {
-    getAllUsers {
-        data {
-            first_name
-            avatar
-            bio
-        }
-    }
-}
-`);
-
-// Verificar la consulta
-console.log("Consulta iniciada...");
-
-// Verificar cambios en result
-watch(result, (newResult) => {
-  console.log("Resultado recibido:", newResult);
-  if (newResult && newResult.getAllUsers) {
-    usuarios.value = newResult.getAllUsers.data;
-  }
-});
-
-// Manejo de errores
-watch(error, (err) => {
-  if (err) {
-    console.error("Error al obtener los usuarios:", err);
-  }
-});
-
-console.log("Usuarios:", usuarios);
 </script>
-
 
 <template>
     <headerComponent />
-    <div class="content">
-        <h1>
-            Lista de Usuarios
-        </h1>
+    <div class="p-4">
+        <p class="text-3xl font-bold text-gray-400">
+            Lista de freelancers
+        </p>
     </div>
-
-    <div class="publicaciones-container">
-       <!-- Itera sobre los usuarios y muestra cada usuario -->
-       <div class="publicacion" v-for="(usu, index) in usuarios" :key="index">
-            <h2>{{ usu.first_name }}</h2>
-            <img :src="usu.avatar" :alt="usu.first_name">
-            <p>{{ usu.bio }}</p>
+    <main class="bg-gray-100 flex items-start justify-start min-h-screen p-4">
+        <loaderComponent :isLoading="loading" />
+        <div v-if="error && !loading" class="w-full h-full flex flex-col items-center justify-center">
+            <errorComponent to="/freelancers" messageRedirect="Reiniciar página"/>
         </div>
-    </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full" v-else>
+            <freenlacerCard v-for="(user, index) in usuarios" :key="index" :first_name="user.first_name" :avatar="user.avatar" :bio="user.bio" />
+        </div>
+    </main>
     <footerComponent />
 </template>
 
