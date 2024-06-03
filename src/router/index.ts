@@ -54,6 +54,10 @@ const router = createRouter({
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title as string
+  next()
+})
 
 
 
