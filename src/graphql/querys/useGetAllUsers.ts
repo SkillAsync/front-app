@@ -5,10 +5,9 @@ import type { Ref } from 'vue'
 import type { freelancer } from '@/types/freelancer'
 
 export const useGetAllUsers = () => {
+  const users: Ref<freelancer[]> = ref([])
 
-    const usuarios: Ref<freelancer[]> = ref([])
-
-    const { result, loading, error } = useQuery(gql`
+  const { result, loading, error } = useQuery(gql`
     query GetAllUsers {
       getAllUsers {
         data {
@@ -22,13 +21,13 @@ export const useGetAllUsers = () => {
 
   watchEffect(() => {
     if (result.value) {
-      usuarios.value.slice(0, usuarios.value.length)
-      usuarios.value.push(...result.value.getAllUsers.data)
+      users.value.slice(0, users.value.length)
+      users.value.push(...result.value.getAllUsers.data)
     }
   })
 
   return {
-    usuarios,
+    users,
     loading,
     error
   }

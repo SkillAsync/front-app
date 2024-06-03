@@ -6,7 +6,7 @@ import freenlacerCard from '@/components/cards/freenlacerCard.vue';
 import errorComponent from '@/components/shared/errorComponent.vue';
 import { useGetAllUsers } from '@/graphql/querys/useGetAllUsers'
 
-const { usuarios, loading, error } = useGetAllUsers()
+const { users, loading, error } = useGetAllUsers()
 
 </script>
 
