@@ -43,6 +43,14 @@ const router = createRouter({
         title: 'Perfil'
       },
       component: ()=>import ('@/views/perfilUsuario.vue')
+    },
+    {
+      path: '/about',
+      name: 'about',
+      meta:{
+        title: 'Acerca de nosotros'
+      },
+      component: () => import('@/views/infoSkillAsync.vue')
     }
   ]
 })
