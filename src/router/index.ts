@@ -50,7 +50,7 @@ const router = createRouter({
       meta:{
         title: 'Acerca de nosotros'
       },
-      component: () => import('@/views/infoSkillAsync.vue')
+      component: () => import('@/views/About.vue')
     }
   ]
 })
