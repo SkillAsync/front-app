@@ -4,6 +4,7 @@ import footerComponent from '@/components/layout/footerComponent.vue';
 import loaderComponent from '@/components/shared/loaderComponent.vue';
 import freenlacerCard from '@/components/cards/freenlacerCard.vue';
 import errorComponent from '@/components/shared/errorComponent.vue';
+import buscadorComponent from '@/components/layout/buscadorComponent.vue'
 import { useGetAllUsers } from '@/graphql/querys/useGetAllUsers'
 
 const { users, loading, error } = useGetAllUsers()
@@ -12,6 +13,7 @@ const { users, loading, error } = useGetAllUsers()
 
 <template>
     <headerComponent />
+    <buscadorComponent></buscadorComponent>
     <div class="p-4">
         <p class="text-3xl font-bold text-gray-400">
             Lista de freelancers
@@ -23,7 +25,7 @@ const { users, loading, error } = useGetAllUsers()
             <errorComponent to="/freelancers" messageRedirect="Reiniciar página"/>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full" v-else>
-            <freenlacerCard v-for="(user, index) in usuarios" :key="index" :first_name="user.first_name" :avatar="user.avatar" :bio="user.bio" />
+            <freenlacerCard v-for="(user, index) in users" :key="index" :first_name="user.first_name" :avatar="user.avatar" :bio="user.bio" />
         </div>
     </main>
     <footerComponent />

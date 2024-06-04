@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import headerComponent from '@/components/layout/headerComponent.vue';
 import footerComponent from '@/components/layout/footerComponent.vue';
+import buscadorComponent from '@/components/layout/buscadorComponent.vue';
 import { ref, watch } from 'vue';
 import { useQuery } from '@vue/apollo-composable';
 import { gql } from 'graphql-tag';
@@ -34,6 +35,7 @@ watch(result, (newResult) => {
 
 <template>
     <headerComponent />
+    <buscadorComponent></buscadorComponent>
     <div class="content">
         <h1>
             Lo mejor es SkillAsync para hacer tu negocio
