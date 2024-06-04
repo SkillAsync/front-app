@@ -1,100 +1,61 @@
 <script setup lang="ts">
+import BuscadorComponent from '@/components/layout/buscadorComponent.vue';
 import headerComponent from '@/components/layout/headerComponent.vue';
+import sectionPopularService from '@/components/layout/sectionPopularService.vue';
 import footerComponent from '@/components/layout/footerComponent.vue';
-import buscadorComponent from '@/components/layout/buscadorComponent.vue';
-import { ref, watch } from 'vue';
-import { useQuery } from '@vue/apollo-composable';
-import { gql } from 'graphql-tag';
-
-// Variable para guardar las publicaciones
-const publicaciones = ref([]);
-
-// Definir la consulta GraphQL
-const { result, loading, error } = useQuery(gql`
-query GetAllservices {
-    getAllservices {
-        image
-        user {
-            first_name
-        }
-        title
-        description
-    }
-}
-`);
-
-// Función que rellena la variable publicaciones
-watch(result, (newResult) => {
-  console.log(newResult)
-  if (newResult && newResult.getAllservices) {
-    publicaciones.value = newResult.getAllservices;
-  }
-});
-
 </script>
 
-<template>
-    <headerComponent />
-    <buscadorComponent></buscadorComponent>
-    <div class="content">
-        <h1>
-            Lo mejor es SkillAsync para hacer tu negocio
-        </h1>
-    </div>
 
-    <div class="publicaciones-container">
-       <!-- Itera sobre los servicios y muestra cada publicación -->
-       <div class="publicacion" v-for="(service, index) in publicaciones" :key="index">
-            <h2>{{ service.title }}</h2>
-            <img :src="service.image" :alt="service.title">
-            <p>{{ service.description }}</p>
-        </div>
+<template>
+    <div>
+        <headerComponent />
+        <main>
+            <section class="h-screen flex flex-col md:flex-row justify-between items-center bg-gray-100 px-8">
+                <div class="text-left md:w-1/2 space-y-4">
+                    <h1 class="text-4xl font-bold">Encuentra Freelancers y Proyectos</h1>
+                    <p class="text-lg">La plataforma perfecta para conectar a profesionales con proyectos emocionantes.
+                    </p>
+                    <div class="w-full max-w-lg">
+                        <buscadorComponent />
+                    </div>
+                </div>
+                <div class="md:w-1/2 mt-8 md:mt-0 flex justify-center">
+                    <img src="@/assets/images/main.avif" alt="Imagen de ejemplo"
+                        class="w-3/4 h-auto rounded-lg shadow-md">
+                </div>
+            </section>
+            <section class="p-8 bg-white">
+                <h2 class="text-3xl font-bold mb-4 text-gray-400">Servicios Destacados</h2>
+                <p class="text-lg mb-8">Explora los servicios más populares y encuentra el freelancer adecuado para tu
+                    proyecto.</p>
+                <div class="relative overflow-hidden">
+                    <sectionPopularService />
+                </div>
+            </section>
+            <section
+                class="h-screen flex flex-col md:flex-row justify-between items-center bg-green-500 text-white px-8">
+                <div class="text-left md:w-1/2 space-y-4">
+                    <h1 class="text-4xl font-bold">Únete a nuestra plataforma</h1>
+                    <p class="text-lg">
+                        Encuentra freelancers y proyectos emocionantes. Conecta con
+                        profesionales que pueden hacer realidad tus ideas.
+                    </p>
+                    <button
+                        class="bg-white text-green-500 px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-gray-200 transition duration-300">
+                        Regístrate ahora
+                    </button>
+                </div>
+                <div class="md:w-1/2 mt-8 md:mt-0 flex justify-center">
+                    <img src="/src/assets/images/devops.png" alt="Imagen de ejemplo"
+                        class="w-3/4 h-auto rounded-lg shadow-md" />
+                </div>
+            </section>
+        </main>
+        <footerComponent />
     </div>
-    <footerComponent />
 </template>
 
+
 <style scoped>
-.content {
-    background-color: #475f54;
-    padding: 20px;
-    text-align: center;
-    font-family: 'Segoe UI', sans-serif;
-    color: #fff;
-}
 
-.content h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.publicaciones-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
-
-.publicacion {
-    flex: 1 1 calc(33.333% - 20px);
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    border: 1px solid black;
-    text-align: center;
-    padding: 10px;
-}
-
-.publicacion h2 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-}
-
-.publicacion img {
-    max-width: 100%;
-    max-height: 300px;
-    margin-bottom: 10px;
-}
-
-.publicacion p {
-    font-size: 0.9rem;
-}
 </style>

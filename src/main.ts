@@ -8,7 +8,7 @@ import App from './App.vue'
 import router from './router'
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:8000/graphql',
+  uri: import.meta.env.VITE_APP_URL_API as string
 })
 
 const apolloClient = new ApolloClient({
