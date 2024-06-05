@@ -5,6 +5,7 @@ import loaderComponent from '@/components/shared/loaderComponent.vue';
 import freenlacerCard from '@/components/cards/freenlacerCard.vue';
 import errorComponent from '@/components/shared/errorComponent.vue';
 import buscadorComponent from '@/components/layout/buscadorComponent.vue'
+import paginadorComponent from '@/components/layout/paginadorComponent.vue'
 import { useGetAllUsers } from '@/graphql/querys/useGetAllUsers'
 
 const { users, loading, error } = useGetAllUsers()
@@ -28,6 +29,7 @@ const { users, loading, error } = useGetAllUsers()
             <freenlacerCard v-for="(user, index) in users" :key="index" :first_name="user.first_name" :avatar="user.avatar" :bio="user.bio" />
         </div>
     </main>
+    <paginadorComponent></paginadorComponent>
     <footerComponent />
 </template>
 
