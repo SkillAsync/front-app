@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
+import useModal from '@/composables/useModal';
+import modalRegistrer from '@/components/layout/modalRegistrer.vue'
+import modalLogin from '@/components/layout/modalLogin.vue'
+
+const { showModal : openRegister, toggleModalState : toogleButtonRegister } = useModal()
+const { showModal : openLogin, toggleModalState : toogleButtonLogin } = useModal()
 
 interface itemNav {
     title: string;
@@ -17,6 +23,8 @@ const itemsNav = ref < itemNav[] > ([
 </script>
 
 <template>
+    <modalRegistrer :open="openRegister" @closeModal="toogleButtonRegister" />
+    <modalLogin :open="openLogin" @closeModal="toogleButtonLogin" />
     <nav
         class="fixed inset-x-0 top-0 z-10 w-full px-8 py-2 bg-green-700 shadow-md border-b border-slate-500 transition duration-700 ease-out mr-20">
         <div class="flex justify-between items-center p-4">
@@ -32,16 +40,16 @@ const itemsNav = ref < itemNav[] > ([
                     {{ item.title }}
                 </RouterLink>
                 <div class="flex items-center space-x-2">
-                    <RouterLink to="/login"
+                    <button @click="toogleButtonLogin"
                         class="px-4 py-2 text-white transition duration-500 ease-out rounded-lg hover:bg-green-900 hover:text-green-90"
                         type="button">
                         Iniciar sesión
-                    </RouterLink>
-                    <RouterLink to="/registo"
+                    </button>
+                    <button @click="toogleButtonRegister"
                         class="px-4 py-2 text-white transition duration-500 ease-out rounded-lg border border-white hover:bg-green-900"
                         type="button">
                         Únete
-                    </RouterLink>
+                    </button>
                 </div>
             </div>
         </div>
