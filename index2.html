@@ -1,0 +1,98 @@
+<template>
+    <div>
+        <headerComponent />
+        <main>
+            <section class="h-screen flex flex-col md:flex-row justify-between items-center bg-gray-100 px-8">
+                <div class="text-left md:w-1/2 space-y-4">
+                    <h1 class="text-4xl font-bold">Encuentra Freelancers y Proyectos</h1>
+                    <p class="text-lg">La plataforma perfecta para conectar a profesionales con proyectos emocionantes.
+                    </p>
+                    <div class="w-full max-w-lg">
+                        <buscadorComponent />
+                    </div>
+                </div>
+                <div class="md:w-1/2 mt-8 md:mt-0 flex justify-center">
+                    <img src="@/assets/images/main.avif" alt="Imagen de ejemplo"
+                        class="w-3/4 h-auto rounded-lg shadow-md">
+                </div>
+            </section>
+            <section class="p-8 bg-white">
+                <h2 class="text-3xl font-bold mb-4 text-gray-400">Servicios Destacados</h2>
+                <p class="text-lg mb-8">Explora los servicios más populares y encuentra el freelancer adecuado para tu
+                    proyecto.</p>
+                <div class="relative overflow-hidden">
+                    <div class="flex transition-transform duration-500 ease-in-out"
+                        :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
+                        <div v-for="(service, index) in services" :key="index"
+                            class="p-4 border rounded-lg shadow-md w-full md:w-auto" style="min-width: 250px;">
+                            <h3 class="text-xl font-semibold">{{ service.title }}</h3>
+                            <p class="mt-2">{{ service.description }}</p>
+                        </div>
+                    </div>
+                    <button
+                        class="absolute top-1/2 transform -translate-y-1/2 right-4 bg-white rounded-full p-2 shadow-md z-10"
+                        @click="nextSlide">
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+</template>
+
+<script setup lang="ts">
+import headerComponent from '@/components/layout/headerComponent.vue';
+import buscadorComponent from '@/components/layout/buscadorComponent.vue'
+import { ref, watch, onMounted } from 'vue';
+
+const services = ref([
+    {
+        title: 'Desarrollo Web',
+        description: 'Desarrollo de aplicaciones web a medida, utilizando las últimas tecnologías y tendencias.'
+    },
+    {
+        title: 'Diseño Gráfico',
+        description: 'Diseño de logotipos, banners, tarjetas de presentación y todo lo que necesites para tu marca.'
+    },
+    {
+        title: 'Marketing Digital',
+        description: 'Estrategias de marketing digital para aumentar la visibilidad de tu marca y atraer más clientes.'
+    },
+    {
+        title: 'Redacción de Contenidos',
+        description: 'Creación de contenidos originales y de calidad para tu blog, redes sociales o página web.'
+    }
+]);
+
+let currentIndex = ref(0);
+const totalSlides = services.value.length;
+
+const nextSlide = () => {
+    currentIndex.value = (currentIndex.value + 1) % totalSlides;
+};
+
+// Auto avanzar cada 5 segundos
+const autoAdvance = () => {
+    setInterval(() => {
+        nextSlide();
+    }, 5000);
+};
+
+onMounted(() => {
+    autoAdvance();
+});
+</script>
+
+<style scoped>
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.transition-transform {
+    transition-property: transform;
+}
+</style>
