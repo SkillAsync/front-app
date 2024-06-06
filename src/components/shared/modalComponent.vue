@@ -1,13 +1,14 @@
 <script setup lang="ts">
-
 import type { propsModal } from '@/types/propsModal';
+import { buildObject } from '@/utils/buildObject';
 
 const props = defineProps<propsModal>();
 
 
 const emit = defineEmits(['closeModal', 'handleSubmit']);
 const closeModal = () => emit('closeModal', props.open);
-
+const data = buildObject(props?.inputs ?? [])
+const handleSubmit = () => emit('handleSubmit', data);
 </script>
 
 <template>
@@ -33,6 +34,11 @@ const closeModal = () => emit('closeModal', props.open);
                         </button>
                     </div>
                     <h2 class="text-2xl font-semibold text-gray-700 text-center">{{ props.header }}</h2>
+                    <!-- Mensaje en caso de error -->
+                    <div v-if="props.error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-4"
+                        role="alert">
+                        <span class="block sm:inline">{{ props.error }}</span>
+                    </div>
                     <a href="#"
                         class="flex items-center justify-center mt-4 text-white rounded-lg shadow-md hover:bg-gray-100">
                         <div class="px-4 py-3">
@@ -59,14 +65,24 @@ const closeModal = () => emit('closeModal', props.open);
                         <a href="#" class="text-xs text-center text-gray-500 uppercase">or login with email</a>
                         <span class="border-b w-1/5 lg:w-1/4"></span>
                     </div>
-                    <div v-for="(input,index) in inputs" :key="index" class="mt-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">{{ input.label }}</label>
-                        <input  :name="input.name" :placeholder="input.placeholder"  class="focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" :type="input.type">
-                    </div>
-                    <slot></slot>
-                    <div class="mt-8">
-                        <button class="bg-green-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-green-600">{{ props.action }}</button>
-                    </div>
+                    <form @submit.prevent="handleSubmit">
+                        <div v-for="(input, index) in inputs" :key="index" class="mt-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">{{ input.label }}</label>
+                            <input :name="input.name" :placeholder="input.placeholder"
+                                class="focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none"
+                                :type="input.type"
+                                v-model="data[input.name].value"
+                                >
+                        </div>
+                        <slot></slot>
+                        <div class="mt-8">
+                            <button
+                                class="bg-green-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-green-600"
+                                type="submit"
+                                >{{
+                                props.action }}</button>
+                        </div>
+                    </form>
                     <div class="mt-4 flex items-center justify-between">
                         <span class="border-b w-1/5 md:w-1/4"></span>
                         <a href="#" class="text-xs text-green-500 uppercase">{{ action2 }}</a>

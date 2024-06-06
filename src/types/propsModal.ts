@@ -7,4 +7,5 @@ export interface propsModal {
   image?: string
   action: string
   action2: string
+  error: string
 }
