@@ -20,7 +20,7 @@ export const useGetAllUsers = () => {
   `)
 
   watchEffect(() => {
-    if (result.value) {
+    if (result.value && !loading.value) {
       users.value.slice(0, users.value.length)
       users.value.push(...result.value.getAllUsers.data)
     }

@@ -13,22 +13,6 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/login',
-      name: 'login',
-      meta: {
-        title: 'Iniciar sesión'
-      },
-      component: () => import('@/views/LoginView.vue')
-    },
-    {
-      path: '/registro',
-      name: 'register',
-      meta: {
-        title: 'Registro'
-      },
-      component: () => import('@/views/RegisterView.vue')
-    },
-    {
       path: '/freelancers',
       name: 'freelancers',
       meta: {
