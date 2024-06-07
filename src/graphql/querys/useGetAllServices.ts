@@ -5,7 +5,7 @@ import type { Ref } from 'vue'
 import type { service } from '@/types/service'
 
 export const useGetAllServices = () => {
-  const services: Ref<service[]> = ref([])
+  const services: Ref<services[]> = ref([])
 
   const { result, loading, error } = useQuery(
     gql`
@@ -22,6 +22,12 @@ export const useGetAllServices = () => {
             title
             description
           }
+          paginatorInfo {
+            count
+            currentPage
+            hasMorePages
+            lastPage
+        }
         }
       }
     `,

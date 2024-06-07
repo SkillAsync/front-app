@@ -1,5 +1,13 @@
 export interface service {
-  title: string
-  description: string
-  image: string
+  data: [
+    image:string,
+    user:[
+      first_name: string
+    ],
+    category: [
+      name:string
+    ],
+    title:string,
+    description:string
+  ]
 }

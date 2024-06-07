@@ -6,10 +6,12 @@ import freenlacerCard from '@/components/cards/freenlacerCard.vue';
 import errorComponent from '@/components/shared/errorComponent.vue';
 import buscadorComponent from '@/components/layout/buscadorComponent.vue'
 import paginadorComponent from '@/components/layout/paginadorComponent.vue'
-import { useGetAllUsers } from '@/graphql/querys/useGetAllUsers'
+import { useGetAllServices } from '@/graphql/querys/useGetAllServices';
+const { services, loading, error } = useGetAllServices()
 
-const { users, loading, error } = useGetAllUsers()
-
+/*:ultimapagina="services.paginatorInfo.lastPage" :primero="services.paginatorInfo.count"
+    :segundo="services.paginatorInfo.currentPage" :status="services.paginatorInfo.hasMorePages" */
+    
 </script>
 
 <template>
@@ -26,10 +28,11 @@ const { users, loading, error } = useGetAllUsers()
             <errorComponent to="/freelancers" messageRedirect="Reiniciar página"/>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full" v-else>
-            <freenlacerCard v-for="(user, index) in users" :key="index" :first_name="user.first_name" :avatar="user.avatar" :bio="user.bio" />
+            <freenlacerCard v-for="(service, index) in services" :key="index" :first_name="service.title"/>
         </div>
     </main>
-    <paginadorComponent></paginadorComponent>
+    <paginadorComponent v-for="(service, index) in services" :key="index" :ultimapagina="service.paginatorInfo.lastPage" :primero="service.paginatorInfo.count"
+    :segundo="service.paginatorInfo.currentPage" :status="service.paginatorInfo.hasMorePages"></paginadorComponent>
     <footerComponent />
 </template>
 

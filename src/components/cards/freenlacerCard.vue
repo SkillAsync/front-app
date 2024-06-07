@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import type { freelancer } from '@/types/freelancer'
-const data = defineProps<freelancer>()
+import type { service } from '@/types/service'
+const data = defineProps<{
+    first_name:string,
+    primero:number,
+    segundo:number,
+    status:boolean
+}>()
+
 </script>
 
 <template >
     <div class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
         <div class="flex items-center">
-            <img :src="data.avatar" :alt="`Foto de ${data.first_name}`" class="w-24 h-24 rounded-full mr-4">
+            <!--<img :src="data.image" :alt="`Foto de ${data.user.first_name}`" class="w-24 h-24 rounded-full mr-4">-->
             <div>
-                <h2 class="text-xl font-bold text-gray-800">{{ data.first_name }}</h2>
+                <h2 class="text-xl font-bold text-gray-800">{{ first_name }}</h2>
                 <p class="text-gray-600">Freelancer | Web Developer</p>
             </div>
         </div>
@@ -20,7 +26,7 @@ const data = defineProps<freelancer>()
             </div>
         </div>
         <div class="mt-4">
-            <p class="text-gray-600">{{ data.bio }}</p>
+            <!--<p class="text-gray-600">{{ data.bio }}</p>-->
         </div>
         <div class="mt-4 flex justify-end">
             <button
