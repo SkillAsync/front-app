@@ -31,8 +31,7 @@ const { services, loading, error } = useGetAllServices()
             <freenlacerCard v-for="(service, index) in services" :key="index" :first_name="service.title"/>
         </div>
     </main>
-    <paginadorComponent v-for="(service, index) in services" :key="index" :ultimapagina="service.paginatorInfo.lastPage" :primero="service.paginatorInfo.count"
-    :segundo="service.paginatorInfo.currentPage" :status="service.paginatorInfo.hasMorePages"></paginadorComponent>
+   
     <footerComponent />
 </template>
 

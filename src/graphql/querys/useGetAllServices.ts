@@ -5,7 +5,7 @@ import type { Ref } from 'vue'
 import type { service } from '@/types/service'
 
 export const useGetAllServices = () => {
-  const services: Ref<services[]> = ref([])
+  const services: Ref<any[]> = ref([])
 
   const { result, loading, error } = useQuery(
     gql`

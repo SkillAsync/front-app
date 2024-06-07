@@ -10,8 +10,7 @@ const { services } = useGetAllServices();
 </script>
 <template>
   <!-- Se coloca el RouterView para que se renderice el componente que corresponda segun la ruta-->
-  {{ us }}
-  {{ services }}
+<RouterView></RouterView>
 </template>
 
 <style scoped></style>
