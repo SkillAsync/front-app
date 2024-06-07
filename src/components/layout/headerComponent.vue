@@ -18,6 +18,7 @@ const itemsNav = ref < itemNav[] > ([
     { title: 'Freelancers', url: '/freelancers' },
     { title: 'Contacto', url: '#' },
     { title: 'Nosotros', url: '/about' },
+    { title: 'Perfil', url: '/perfil'}
 ]);
 
 </script>

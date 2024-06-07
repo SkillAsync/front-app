@@ -4,7 +4,8 @@ const data = defineProps<{
     first_name:string,
     primero:number,
     segundo:number,
-    status:boolean
+    status:boolean,
+    image: string
 }>()
 
 </script>
@@ -12,7 +13,7 @@ const data = defineProps<{
 <template >
     <div class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
         <div class="flex items-center">
-            <!--<img :src="data.image" :alt="`Foto de ${data.user.first_name}`" class="w-24 h-24 rounded-full mr-4">-->
+            <img :src="data.image" :alt="`Foto de ${first_name}`" class="w-24 h-24 rounded-full mr-4">
             <div>
                 <h2 class="text-xl font-bold text-gray-800">{{ first_name }}</h2>
                 <p class="text-gray-600">Freelancer | Web Developer</p>
