@@ -22,6 +22,12 @@ const itemsNav = ref<itemNav[]>([
 
 const token = localStorage.getItem('access_token')
 
+const logout = () => {
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('user')
+    window.location.reload()
+}
+
 
 </script>
 
@@ -61,7 +67,7 @@ const token = localStorage.getItem('access_token')
                         <i class="fas fa-user mx-2"></i>
                         Perfil
                     </RouterLink>
-                    <button @click="toogleButtonLogin"
+                    <button @click="logout"
                         class="px-4 py-2 text-white transition duration-500 ease-out rounded-lg border border-white hover:bg-green-900"
                         type="button">
                         <i class="fas fa-sign-out-alt"></i>
