@@ -11,18 +11,21 @@ const CREATE_USER_MUTATION = gql`
 interface CreateUserInput {
   first_name: string
   email: string
-  password: string
+  password: string 
 }
 
 export const useMutateCreateUser = () => {
-  const { mutate: createUser, onDone } = useMutation(CREATE_USER_MUTATION)
+  const { mutate: createUser, onDone ,onError} = useMutation(CREATE_USER_MUTATION)
 
   const createUserHandler = async (input: any) => {
-    await createUser({ input })
+    const response = await createUser({ input })
+
+    return response
   }
 
   return {
-    createUserHandler,
-    onDone
+    createUser : createUserHandler,
+    onDone,
+    onError
   }
 }

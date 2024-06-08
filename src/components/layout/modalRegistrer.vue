@@ -7,7 +7,14 @@ import { ref } from 'vue';
 
 const props = defineProps<{ open: boolean }>();
 
-const { createUserHandler } = useMutateCreateUser()
+const { createUser, onError } = useMutateCreateUser()
+
+onError(({ graphQLErrors }) => {
+        graphQLErrors.forEach((err) => {
+        console.error(err.message);
+        error.value = err.message; 
+    });
+});
 
 const inputs: Array<objectInput> = [
     {
@@ -61,10 +68,16 @@ const register = async (data: object) => {
         }, {})
 
 
-        await createUserHandler(dataTransform)
-        closeModal()
+        try {
+            const response = await createUser(dataTransform)
+            const { data: { createUser: { uuid } } } = response
+            closeModal()
+        } catch (error) {
+            console.error(error);
+        }
+       
     } catch (_error) {
-        error.value = 'Ha ocurrido un error, por favor intenta de nuevo'
+       console.error(error);
     }
 }
 
