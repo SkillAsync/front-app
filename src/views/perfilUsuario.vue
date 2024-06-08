@@ -79,6 +79,35 @@
                                     :placeholder="user.value.last_name">
                         </div>
                     </div>
+                    <div class="flex lg:flex-row md:flex-col sm:flex-col xs:flex-col gap-2 justify-center w-full">
+                        <div class="w-full  mb-4 mt-6">
+                            <label for="" class="mb-2 dark:text-gray-300">{{ user.value.email }}</label>
+                            <input type="text"
+                                    class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
+                                    :placeholder="user.value.email">
+                        </div>
+                        <div class="w-full  mb-4 lg:mt-6">
+                            <label for="" class=" dark:text-gray-300">{{user.value.phone}}</label>
+                            <input type="text"
+                                    class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
+                                    :placeholder="user.value.phone">
+                        </div>
+                    </div>
+
+                    <div class="flex lg:flex-row md:flex-col sm:flex-col xs:flex-col gap-2 justify-center w-full">
+                        <div class="w-full  mb-4 mt-6">
+                            <label for="" class="mb-2 dark:text-gray-300">{{ user.value.city }}</label>
+                            <input type="text"
+                                    class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
+                                    :placeholder="user.value.city">
+                        </div>
+                        <div class="w-full  mb-4 lg:mt-6">
+                            <label for="" class=" dark:text-gray-300">{{user.value.bio}}</label>
+                            <input type="text"
+                                    class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
+                                    :placeholder="user.value.bio">
+                        </div>
+                    </div>
 
                     <div class="flex lg:flex-row md:flex-col sm:flex-col xs:flex-col gap-2 justify-center w-full">
                         <div class="w-full">
@@ -96,7 +125,7 @@
                                     class="text-grey p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800">
                         </div>
                     </div>
-                    <div class="w-full rounded-lg bg-blue-500 mt-4 text-white text-lg font-semibold">
+                    <div class="w-full rounded-lg bg-green-700 mt-4 text-white text-lg font-semibold">
                         <button type="submit" class="w-full p-4">Submit</button>
                     </div>
                 </form>
