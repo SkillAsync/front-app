@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import headerComponent from '@/components/layout/headerComponent.vue';
 import footerComponent from '@/components/layout/footerComponent.vue';
 import loaderComponent from '@/components/shared/loaderComponent.vue';
@@ -10,14 +10,17 @@ import paginadorComponent from '@/components/layout/paginadorComponent.vue'
 import { useGetAllServices } from '@/graphql/querys/useGetAllServices';
 
 const currentPage = ref(1)
-const { services, paginatorInfo, loading, error } = useGetAllServices(currentPage.value)
+
+const { services, paginatorInfo, loading, error } = useGetAllServices(currentPage)
 
 const updatePage = (page) => {
     currentPage.value = page
-
+    services.value = []
 }
 
-
+watchEffect(() => {
+    currentPage
+})
 </script>
 
 <template>
@@ -29,7 +32,8 @@ const updatePage = (page) => {
         </p>
     </div>
     <h1>
-        {{ currentPage }}
+
+      
     </h1>
     <main class="bg-gray-100 flex items-start justify:start min-h-screen p-4">
         <loaderComponent :isLoading="loading" />
