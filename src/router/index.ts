@@ -24,7 +24,8 @@ const router = createRouter({
       path: '/perfil',
       name: 'perfil',
       meta:{
-        title: 'Perfil'
+        title: 'Perfil',
+        requiresAuth: true
       },
       component: ()=>import ('@/views/perfilUsuario.vue')
     },
@@ -53,10 +54,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !localStorage.getItem('access_token')) {
     next({ name: 'home' })
     return
-  } else if (!to.meta.requiresAuth && localStorage.getItem('access_token')) {
-    next({ name: 'dashboard' })
-    return
-  }
+  } 
   next()
 })
 

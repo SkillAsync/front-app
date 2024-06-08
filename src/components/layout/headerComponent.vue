@@ -5,21 +5,23 @@ import useModal from '@/composables/useModal';
 import modalRegistrer from '@/components/layout/modalRegistrer.vue'
 import modalLogin from '@/components/layout/modalLogin.vue'
 
-const { showModal : openRegister, toggleModalState : toogleButtonRegister } = useModal()
-const { showModal : openLogin, toggleModalState : toogleButtonLogin } = useModal()
+const { showModal: openRegister, toggleModalState: toogleButtonRegister } = useModal()
+const { showModal: openLogin, toggleModalState: toogleButtonLogin } = useModal()
 
 interface itemNav {
     title: string;
     url: string;
 }
 
-const itemsNav = ref < itemNav[] > ([
+const itemsNav = ref<itemNav[]>([
     { title: 'Inicio', url: '/' },
     { title: 'Freelancers', url: '/freelancers' },
     { title: 'Contacto', url: '#' },
     { title: 'Nosotros', url: '/about' },
-    { title: 'Perfil', url: '/perfil'}
 ]);
+
+const token = localStorage.getItem('access_token')
+
 
 </script>
 
@@ -40,7 +42,7 @@ const itemsNav = ref < itemNav[] > ([
                     class="text-white hover:shadow-lg hover:bg-green-900 rounded-lg px-2 py-2 transition duration-300">
                     {{ item.title }}
                 </RouterLink>
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-2" v-if="!token">
                     <button @click="toogleButtonLogin"
                         class="px-4 py-2 text-white transition duration-500 ease-out rounded-lg hover:bg-green-900 hover:text-green-90"
                         type="button">
@@ -52,6 +54,21 @@ const itemsNav = ref < itemNav[] > ([
                         Únete
                     </button>
                 </div>
+                <div class="flex items-center space-x-2" v-else>
+                    <RouterLink to="/perfil"
+                        class="text-white hover:shadow-lg hover:bg-green-900 rounded-lg px-2 py-2 transition duration-300 ">
+                        <font-awesome-icon :icon="['fas', 'user']" />
+                        <i class="fas fa-user mx-2"></i>
+                        Perfil
+                    </RouterLink>
+                    <button @click="toogleButtonLogin"
+                        class="px-4 py-2 text-white transition duration-500 ease-out rounded-lg border border-white hover:bg-green-900"
+                        type="button">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Cerrar sesión
+                    </button>
+                </div>
+
             </div>
         </div>
     </nav>
