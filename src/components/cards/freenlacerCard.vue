@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import type { service } from '@/types/service'
-const data = defineProps<{
-    first_name:string,
-    primero:number,
-    segundo:number,
-    status:boolean,
+
+
+interface props {
+    first_name: string,
+    status?: boolean,
     image: string
-}>()
+}
+const data = defineProps<props>()
+
 
 </script>
 

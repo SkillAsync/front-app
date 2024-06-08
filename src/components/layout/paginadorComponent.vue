@@ -6,7 +6,7 @@
           <a href="#" 
              class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
              @click.prevent="prevPage"
-             :disabled="!hasPrevPage">Previous</a>
+             :disabled="!hasPrevPage">Anterior</a>
         </li>
 
         <li v-for="page in totalPages" :key="page">
@@ -19,7 +19,7 @@
           <a href="#" 
             class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
             @click.prevent="nextPage"
-            :disabled="!hasNextPage">Next</a>
+            :disabled="!hasNextPage">Siguiente</a>
         </li>
       </ul>
     </nav>
@@ -28,11 +28,13 @@
 
 <script setup lang="ts">
 import { computed, defineEmits } from 'vue'
+import type { paginatorInfo } from '@/types/paginatorInfo'
 
-const props = defineProps({
-  paginatorInfo: Object,
-  currentPage: Number
-})
+interface Props {
+  paginatorInfo: paginatorInfo,
+}
+
+const props = defineProps<Props>()
 
 const emit = defineEmits(['update:page'])
 
@@ -57,7 +59,7 @@ const goToPage = (page) => {
 }
 
 const hasNextPage = computed(() => props.paginatorInfo.hasMorePages)
-const hasPrevPage = computed(() => props.currentPage > 1)
+const hasPrevPage = computed(() => props.paginatorInfo.currentPage > 1)
 
 </script>
 

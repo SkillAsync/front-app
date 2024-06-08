@@ -3,6 +3,9 @@ import modalComponent from '@/components/shared/modalComponent.vue'
 import { useMutateLogin } from '@/graphql/mutations/useMutateLogin';
 import type { objectInput } from '@/types/objectInput';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const props = defineProps<{ open: boolean }>();
 const error = ref<string>('')
@@ -10,9 +13,7 @@ const error = ref<string>('')
 const { login, onError } = useMutateLogin()
 
 onError(({ graphQLErrors }) => {
-    // graphQLErrors es un array de errores devueltos por GraphQL
     graphQLErrors.forEach((err) => {
-        console.error(err.message);
         error.value = err.message; 
     });
 });
@@ -46,10 +47,16 @@ const loginFunction = async (data: object) => {
             acc[key] = data[key].value.trim()
             return acc
         }, {})
+
         const response = await login(dataTransform)
+
         const { data: { login: { access_token ,user } } } = response
+
         localStorage.setItem('access_token', access_token)
         localStorage.setItem('user', JSON.stringify(user))
+
+        router.push({ name: 'dashboard' })
+        
     } catch (error) {
         console.error(error);
     }

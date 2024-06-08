@@ -2,11 +2,22 @@ import { ref, watchEffect } from 'vue'
 import { useQuery } from '@vue/apollo-composable'
 import { gql } from 'graphql-tag'
 import type { Ref } from 'vue'
-import type { service } from '@/types/service'
+import type { paginatorInfo } from '@/types/paginatorInfo'
+import type { service} from '@/types/service'
+
 
 export const useGetAllServices = (page: number) => {
-  const services: Ref<any[]> = ref([])
-  const paginatorInfo: Ref<any> = ref(null)
+  const services: Ref<service[]> = ref([])
+  const paginatorInfo: Ref<paginatorInfo> = ref({
+    count: 0,
+    currentPage: 0,
+    firstItem: 0,
+    hasMorePages: false,
+    lastItem: 0,
+    lastPage: 0,
+    perPage: 0,
+    total: 0,
+  } )
 
   const { result, loading, error } = useQuery(
     gql`

@@ -35,11 +35,28 @@ const router = createRouter({
         title: 'Acerca de nosotros'
       },
       component: () => import('@/views/About.vue')
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      meta:{
+        title: 'Dashboard',
+        requiresAuth: true
+      },
+      component: () => import('@/views/DashboardView.vue')
     }
   ]
 })
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title as string
+
+  if (to.meta.requiresAuth && !localStorage.getItem('access_token')) {
+    next({ name: 'home' })
+    return
+  } else if (!to.meta.requiresAuth && localStorage.getItem('access_token')) {
+    next({ name: 'dashboard' })
+    return
+  }
   next()
 })
 

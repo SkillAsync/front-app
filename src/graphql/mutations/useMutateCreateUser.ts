@@ -17,7 +17,7 @@ interface CreateUserInput {
 export const useMutateCreateUser = () => {
   const { mutate: createUser, onDone ,onError} = useMutation(CREATE_USER_MUTATION)
 
-  const createUserHandler = async (input: any) => {
+  const createUserHandler = async (input: CreateUserInput) => {
     const response = await createUser({ input })
 
     return response

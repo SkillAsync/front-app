@@ -10,9 +10,9 @@ const props = defineProps<{ open: boolean }>();
 const { createUser, onError } = useMutateCreateUser()
 
 onError(({ graphQLErrors }) => {
-        graphQLErrors.forEach((err) => {
+    graphQLErrors.forEach((err) => {
         console.error(err.message);
-        error.value = err.message; 
+        error.value = err.message;
     });
 });
 
@@ -63,37 +63,25 @@ const register = async (data: object) => {
         }
 
         const dataTransform = Object.keys(rest).reduce((acc, key) => {
-            acc[key] = rest[key].value.trim() 
+            acc[key] = rest[key].value.trim()
             return acc
         }, {})
 
 
-        try {
-            const response = await createUser(dataTransform)
-            const { data: { createUser: { uuid } } } = response
-            closeModal()
-        } catch (error) {
-            console.error(error);
-        }
-       
+        await createUser(dataTransform)
+        closeModal()
+
     } catch (_error) {
-       console.error(error);
+        console.error(error);
     }
 }
 
 </script>
 
 <template>
-    <modalComponent 
-        :error="error"
-        header="Bievenido al registro de SkilAsync" 
-        action="Registrarse" 
-        action2="Ya tengo una cuenta"
-        :inputs="inputs" 
-        :open="props.open" 
-        image="/src/assets/images/image-register.jpg" 
-        @closeModal="closeModal"
-        @handleSubmit="register" />
+    <modalComponent :error="error" header="Bievenido al registro de SkilAsync" action="Registrarse"
+        action2="Ya tengo una cuenta" :inputs="inputs" :open="props.open" image="/src/assets/images/image-register.jpg"
+        @closeModal="closeModal" @handleSubmit="register" />
 
 
 </template>

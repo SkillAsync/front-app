@@ -10,7 +10,6 @@ const httpLink = createHttpLink({
     uri: import.meta.env.VITE_APP_URL_API as string
 })
 
-// Crear un enlace de autenticación que añade el token de acceso al encabezado Authorization
 const authMiddleware = new ApolloLink((operation, forward) => {
     const token = localStorage.getItem('access_token')
     operation.setContext({
@@ -21,7 +20,6 @@ const authMiddleware = new ApolloLink((operation, forward) => {
     return forward(operation)
 })
 
-// Crear dos instancias de Apollo Client
 const apolloClient = new ApolloClient({
     link: from([authMiddleware, httpLink]),
     cache: new InMemoryCache(),
