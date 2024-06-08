@@ -24,13 +24,8 @@ export const useMutateLogin = () => {
     const { mutate: login, onDone, onError } = useMutation(LOGIN_MUTATION)
 
     const loginHandler = async (input: LoginInput) => {
-        try {
             const response = await login({ ...input })
             return response
-        } catch (error) {
-            console.error(error)
-            throw error
-        }
     }
 
     return {
