@@ -55,6 +55,7 @@ export const useGetAllServices = (page: number) => {
       services.value.slice(0, services.value.length)
       services.value.push(...result.value.getAllservices.data)
       paginatorInfo.value = result.value.getAllservices.paginatorInfo
+      
     }
   })
 
