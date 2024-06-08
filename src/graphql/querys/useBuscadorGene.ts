@@ -4,7 +4,7 @@ import { gql } from 'graphql-tag'
 import type { Ref } from 'vue'
 import type { service } from '@/types/service'
 
-export const useBuscadorGene = (searchTerm: Ref<string>) => {
+export const useBuscadorGene = (searchTerm: string) => {
     const services: Ref<service[]> = ref([])
 
     const { result, loading, error } = useQuery(
@@ -29,14 +29,16 @@ export const useBuscadorGene = (searchTerm: Ref<string>) => {
                 }
             }
         `,
-        () => ({ generecSearch: searchTerm.value })
+        { generecSearch: searchTerm }
     )
 
     watchEffect(() => {
-        if (result.value && !loading.value) {
-            services.value = result.value.getAllservices.data
-        }
-    })
+    if (result.value && !loading.value) {
+        services.value = [];
+        services.value.push(...result.value.getAllservices.data);
+    }
+})
+
 
     return {
         services,

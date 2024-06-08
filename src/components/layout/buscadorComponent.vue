@@ -2,11 +2,8 @@
   <div>
     <div class="group">
       <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
-        <g>
-          <path
-            d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z">
-          </path>
-        </g>
+        <title>Icono de búsqueda</title>
+        <!-- SVG content -->
       </svg>
       <input
         v-model="searchTerm"
@@ -16,12 +13,12 @@
         class="input"
       />
     </div>
-    <div v-if="loading">Cargando...</div>
-    <div v-if="error">{{ error.message }}</div>
-    <ul v-if="services.length > 0">
-      <li v-for="service in services" :key="service.data.uuid">
-        <h3>{{ service.data.title }}</h3>
-        <p>{{ service.data.description }}</p>
+    
+    <ul v-if="searchTerm.length > 0" class="services-list">
+      <div v-if="loading">Loading...</div>
+      <li v-if="services.length === 0" class="no-results">No se encontraron resultados</li>
+      <li v-for="service in services" :key="service.uuid" class="service-item">
+        <h3>{{ service.title }}</h3>
         <!-- Puedes agregar más detalles aquí -->
       </li>
     </ul>
@@ -36,11 +33,9 @@ const searchTerm = ref('')
 const { services, loading, error } = useBuscadorGene(searchTerm)
 
 const handleInput = () => {
-  services.value = useBuscadorGene(searchTerm)
-  console.log(services.value)
+  // Esto se ejecuta cada vez que el usuario escribe en el campo de búsqueda
+  useBuscadorGene(searchTerm.value)
 }
-
-console.log(services.value)
 </script>
 
 <style scoped>
@@ -85,5 +80,21 @@ console.log(services.value)
   fill: #dedefe;
   width: 1rem;
   height: 1rem;
+}
+
+.services-list {
+  margin-top: 1rem;
+}
+
+.no-results {
+  color: #888;
+  font-style: italic;
+}
+
+.service-item {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #f3f3f4;
 }
 </style>
