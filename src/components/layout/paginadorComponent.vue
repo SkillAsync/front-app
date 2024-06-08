@@ -40,14 +40,15 @@ const totalPages = computed(() => props.paginatorInfo.lastPage)
 
 const nextPage = () => {
   if (props.paginatorInfo.hasMorePages) {
-    console.log(props.currentPage)
-    emit('update:page', props.currentPage + 1)
+     const page = props.paginatorInfo?.currentPage + 1
+    emit('update:page', page)
   }
 }
 
 const prevPage = () => {
-  if (props.currentPage > 1) {
-    emit('update:page', props.currentPage - 1)
+  if (props.paginatorInfo.currentPage > 1) {
+    const page = props.paginatorInfo?.currentPage - 1
+    emit('update:page', page)
   }
 }
 

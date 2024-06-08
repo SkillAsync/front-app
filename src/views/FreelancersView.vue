@@ -33,7 +33,7 @@ watchEffect(() => {
     </div>
     <h1>
 
-      
+      {{ currentPage }}
     </h1>
     <main class="bg-gray-100 flex items-start justify:start min-h-screen p-4">
         <loaderComponent :isLoading="loading" />
