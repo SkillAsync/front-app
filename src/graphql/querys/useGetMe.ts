@@ -1,11 +1,10 @@
 import { ref, watchEffect } from 'vue'
 import { useQuery } from '@vue/apollo-composable'
 import { gql } from 'graphql-tag'
-import type { Ref } from 'vue'
 import type { user } from '@/types/user'
 
 export const useMe = () => {
-  const me = ref<any>({})
+  const me = ref<user>()
   const { result, loading, error } = useQuery(gql`
     query Me {
       me {
@@ -21,7 +20,6 @@ export const useMe = () => {
         city
         address
         bio
-        enabled
       }
     }
   `)

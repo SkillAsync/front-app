@@ -1,5 +1,5 @@
 export interface user {
-    data:string,
+    uuid:string,
     first_name:string,
     last_name:string,
     email:string,
@@ -7,9 +7,9 @@ export interface user {
     phone:string,
     avatar:string,
     contry:string,
-    city:string,
+    city: string,
+    address:string,
     bio:string
 }
-
 
 

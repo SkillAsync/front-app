@@ -1,5 +1,5 @@
 <template>
-    <!--<headerComponent></headerComponent>-->
+    <!-- <headerComponent></headerComponent> -->
     
     <!-- Poner condicional v-if para no mostrar si alguien no está logeado -->
     <section>
@@ -14,7 +14,7 @@
         </div>
     
         <div class="w-full">
-          <div>Bienvenido "nombre de usuario"</div>
+        <div>Bienvenido {{ user.value.first_name }}</div>
           <div>Subir nueva publicación</div>
           <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
           <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[440px] mb-2.5"></div>
@@ -22,7 +22,6 @@
           <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[360px]"></div>
         </div>
         <span class="sr-only">Loading...</span>
-        
         <div>
           <input type="file" @change="handleFileUpload" />
           <button @click="submitFile">Upload</button>
@@ -37,6 +36,23 @@
   import { ref } from 'vue';
   import headerComponent from '@/components/layout/headerComponent.vue';
   import footerComponent from '@/components/layout/footerComponent.vue';
+  import { useMe } from '@/graphql/querys/useGetMe';
+
+  // Variables
+  const user = ref<any>();
+
+  const { me, loading, error } = useMe();
+  if (me) {
+    user.value = me
+  }
+  
+
+
+
+  // Metodos
+
+
+
   
   // Variables reactivas
   const selectedFile = ref<File | null>(null);
