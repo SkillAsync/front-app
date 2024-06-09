@@ -17,6 +17,7 @@ import footerComponent from '@/components/layout/footerComponent.vue';
                     </p>
                     <div class="w-full max-w-lg">
                         <buscadorComponent />
+                        <p>pruebanp</p>
                     </div>
                 </div>
                 <div class="md:w-1/2 mt-8 md:mt-0 flex justify-center">
