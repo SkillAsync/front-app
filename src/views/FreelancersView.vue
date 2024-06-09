@@ -1,14 +1,26 @@
 <script setup lang="ts">
+import { ref, watchEffect } from 'vue'
 import headerComponent from '@/components/layout/headerComponent.vue';
 import footerComponent from '@/components/layout/footerComponent.vue';
 import loaderComponent from '@/components/shared/loaderComponent.vue';
 import freenlacerCard from '@/components/cards/freenlacerCard.vue';
 import errorComponent from '@/components/shared/errorComponent.vue';
 import buscadorComponent from '@/components/layout/buscadorComponent.vue'
-import { useGetAllUsers } from '@/graphql/querys/useGetAllUsers'
+import paginadorComponent from '@/components/layout/paginadorComponent.vue'
+import { useGetAllServices } from '@/graphql/querys/useGetAllServices';
 
-const { users, loading, error } = useGetAllUsers()
+const currentPage = ref(1)
 
+const { services, paginatorInfo, loading, error } = useGetAllServices(currentPage)
+
+const updatePage = (page) => {
+    currentPage.value = page
+    services.value = []
+}
+
+watchEffect(() => {
+    currentPage
+})
 </script>
 
 <template>
@@ -19,60 +31,21 @@ const { users, loading, error } = useGetAllUsers()
             Lista de freelancers
         </p>
     </div>
-    <main class="bg-gray-100 flex items-start justify-start min-h-screen p-4">
+    <h1>
+
+      {{ currentPage }}
+    </h1>
+    <main class="bg-gray-100 flex items-start justify:start min-h-screen p-4">
         <loaderComponent :isLoading="loading" />
-        <div v-if="error && !loading" class="w-full h-full flex flex-col items-center justify-center">
+        <div v-if="error && !loading" class="w-full h-full flex flex-col items:center justify:center">
             <errorComponent to="/freelancers" messageRedirect="Reiniciar página"/>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full" v-else>
-            <freenlacerCard v-for="(user, index) in users" :key="index" :first_name="user.first_name" :avatar="user.avatar" :bio="user.bio" />
+            <freenlacerCard v-for="(service, index) in services" :key="index" :first_name="service.title" :image="service.image"  />
         </div>
+        <paginadorComponent 
+          :paginatorInfo="paginatorInfo"
+          @update:page="updatePage"
+        ></paginadorComponent>
     </main>
-    <footerComponent />
 </template>
-
-<style scoped>
-.content {
-    background-color: #475f54;
-    padding: 20px;
-    text-align: center;
-    font-family: 'Segoe UI', sans-serif;
-    color: #fff;
-}
-
-.content h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.publicaciones-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
-
-.publicacion {
-    flex: 1 1 calc(33.333% - 20px);
-    box-sizing: border-box;
-    margin-bottom: 20px;
-    border: 1px solid black;
-    text-align: center;
-    padding: 10px;
-}
-
-.publicacion h2 {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-}
-
-.publicacion img {
-    max-width: 100%;
-    max-height: 300px;
-    margin-bottom: 10px;
-}
-
-.publicacion p {
-    font-size: 0.9rem;
-}
-</style>

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 
-import type { service } from '@/types/service';
+interface service {
+    title: string;
+    image: string;
+}
 
 const { title, image } = defineProps<service>();
 

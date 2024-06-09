@@ -13,22 +13,6 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/login',
-      name: 'login',
-      meta: {
-        title: 'Iniciar sesión'
-      },
-      component: () => import('@/views/LoginView.vue')
-    },
-    {
-      path: '/registro',
-      name: 'register',
-      meta: {
-        title: 'Registro'
-      },
-      component: () => import('@/views/RegisterView.vue')
-    },
-    {
       path: '/freelancers',
       name: 'freelancers',
       meta: {
@@ -40,7 +24,8 @@ const router = createRouter({
       path: '/perfil',
       name: 'perfil',
       meta:{
-        title: 'Perfil'
+        title: 'Perfil',
+        requiresAuth: true
       },
       component: ()=>import ('@/views/perfilUsuario.vue')
     },
@@ -51,11 +36,25 @@ const router = createRouter({
         title: 'Acerca de nosotros'
       },
       component: () => import('@/views/About.vue')
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      meta:{
+        title: 'Dashboard',
+        requiresAuth: true
+      },
+      component: () => import('@/views/DashboardView.vue')
     }
   ]
 })
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title as string
+
+  if (to.meta.requiresAuth && !localStorage.getItem('access_token')) {
+    next({ name: 'home' })
+    return
+  } 
   next()
 })
 
