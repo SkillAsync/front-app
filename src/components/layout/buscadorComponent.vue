@@ -18,7 +18,7 @@
       <div v-if="loading">Loading...</div>
       <li v-if="services.length === 0" class="no-results">No se encontraron resultados</li>
       <li v-for="service in services" :key="service.uuid" class="service-item">
-        <h3><button class="service-button">{{ service.title }}</button></h3>
+        <h3><RouterLink :to="{ name: 'servicio', params: { uuid: service.uuid } }">{{ service.title }}</RouterLink></h3>
       </li>
     </ul>
   </div>

@@ -21,12 +21,14 @@ const router = createRouter({
       component: () => import('@/views/FreelancersView.vue')
     },
     {
-      path: '/freelance',
-      name: 'freelance',
+      path: '/servicio/:uuid',
+      name: 'servicio',
       meta: {
         title: 'Servicio'
       },
-      component: ()=> import('@/views/FreelanceView.vue')
+      component: ()=> import('@/views/servicioView.vue'),
+      props: (route) => ({ uuid: route.params.uuid})
+      
     },
     {
       path: '/perfil',
