@@ -21,6 +21,14 @@ const router = createRouter({
       component: () => import('@/views/FreelancersView.vue')
     },
     {
+      path: '/freelance',
+      name: 'freelance',
+      meta: {
+        title: 'Servicio'
+      },
+      component: ()=> import('@/views/FreelanceView.vue')
+    },
+    {
       path: '/perfil',
       name: 'perfil',
       meta:{

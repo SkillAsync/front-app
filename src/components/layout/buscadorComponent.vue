@@ -18,8 +18,7 @@
       <div v-if="loading">Loading...</div>
       <li v-if="services.length === 0" class="no-results">No se encontraron resultados</li>
       <li v-for="service in services" :key="service.uuid" class="service-item">
-        <h3>{{ service.title }}</h3>
-        <!-- Puedes agregar más detalles aquí -->
+        <h3><button class="service-button">{{ service.title }}</button></h3>
       </li>
     </ul>
   </div>
@@ -96,5 +95,18 @@ const handleInput = () => {
   padding: 1rem;
   border-radius: 8px;
   background-color: #f3f3f4;
+}
+.service-button {
+  background: none;
+  border: none;
+  padding: 2px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: box-shadow 0.5s ease;
+}
+
+.service-button:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
 }
 </style>
