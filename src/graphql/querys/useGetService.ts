@@ -12,6 +12,7 @@ export const useGetService = (uuid: Ref<string>) => {
       query Getservice($uuid: String!) {
         getservice(uuid: $uuid) {
           uuid
+          image
           user {
             uuid
             first_name
