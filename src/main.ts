@@ -3,6 +3,7 @@ import { createApp, provide, h } from 'vue'
 import { createPinia } from 'pinia'
 import { ApolloClient, createHttpLink, InMemoryCache, from, ApolloLink } from '@apollo/client/core'
 import { DefaultApolloClient } from '@vue/apollo-composable'
+
 import App from './App.vue'
 import router from './router'
 

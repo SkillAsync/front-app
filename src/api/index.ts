@@ -1,23 +1,39 @@
 import axios from 'axios'
+import { useAuthStore} from '../stores/useAuthStore'
+import { storeToRefs } from 'pinia'
 
-const API_URL = 'http://localhost:3000' // URL del servidor Node.js
+
+const authStore = useAuthStore()
+
+const { user } = storeToRefs(authStore)
+const uuid : string = user.value?.uuid || ''
+
+const API_URL = import.meta.env.VITE_APP_SERVER_CHAT_URL
 
 export const createChannel = async (name, participants) => {
   try {
     const response = await axios.post(`${API_URL}/channels`, { name, participants })
     return response.data
   } catch (error) {
-    throw error.response.data
+    console.log('Hubo un error al crear el canal')
   }
 }
 
 export const getChannels = async () => {
   try {
-    const uuid = JSON.parse(localStorage.getItem('user').uuid)
-    const response = await axios.get(`${API_URL}/channels${uuid}`)
+    const response = await axios.get(`${API_URL}/channels/${uuid}`)
     return response.data
   } catch (error) {
-    conserror.response.data
+    console.log('Hubo un error al obtener los canales')
+  }
+}
+
+export const getMessages = async (channelId : string) => {
+  try {
+    const response = await axios.get(`${API_URL}/messages/${channelId}`)
+    return response.data
+  } catch (error) {
+    console.log('Hubo un error al obtener los mensajes')
   }
 }
 

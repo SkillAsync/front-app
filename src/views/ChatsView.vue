@@ -1,148 +1,158 @@
-<script setup lang="ts">
-import headerComponent from '@/components/layout/headerComponent.vue';
-
-</script>
 <template>
     <headerComponent />
-    <script setup lang="ts">
-
-import { onMounted, ref, watch } from 'vue';
-import { io } from 'socket.io-client';
-import { getChannels } from './api/index';
-
-const socket = ref(null);
-const channelId = ref(JSON.parse(localStorage.getItem('user')).uuid);
-console.log(channelId.value)
-const messages = ref([]);
-const newMessage = ref('');
-const joinedChannel = ref(false);
-const user = ref('');
-
-const joinChannel = () => {
-  if (channelId.value) {
-    socket.value = io('http://localhost:3000');
-    socket.value.emit('joinChannel', channelId.value);
-
-    socket.value.on('channelMessages', (msgs) => {
-      messages.value = msgs;
-    });
-
-    socket.value.on('newMessage', (msg) => {
-      messages.value.push(msg);
-      socket.value.emit('messageDelivered', msg._id);
-    });
-
-    joinedChannel.value = true;
-  }
-};
-
-const sendMessage = () => {
-  if (newMessage.value) {
-    socket.value.emit('sendMessage', {
-      channel: channelId.value,
-      user: user.value,
-      message: newMessage.value
-    });
-
-    newMessage.value = '';
-  }
-};
-
-onMounted(() => {
-  getChannels().then((res) => {
-    console.log(res);
-  });
-});
-
-
-</script>
-    <template>
-        <div class="flex h-screen">
-            <!-- Parte izquierda: Lista de chats -->
-            <div class="flex flex-col w-1/3 bg-gray-100 border-r border-gray-300">
-                <!-- Encabezado de la lista de chats -->
-                <div class="px-4 py-3 bg-gray-200 border-b border-gray-300">
-                    <h2 class="text-lg font-bold">Chats</h2>
-                </div>
-                <!-- Lista de chats -->
-                <div class="flex-1 overflow-y-auto">
-                    <!-- Aquí van los chats, puedes usar un bucle para mostrar varios -->
-                    <div class="px-4 py-3 hover:bg-gray-200 cursor-pointer">
-                        <div class="font-bold">Nombre del chat</div>
-                        <div class="text-sm text-gray-500">Último mensaje recibido</div>
-                        <div class="text-xs text-gray-400">Hora del último mensaje</div>
-                    </div>
-                </div>
-                <!-- Pié de lista de chats -->
-                <div class="px-4 py-3 bg-gray-200 border-t border-gray-300">
-                    <span class="text-xs text-gray-500">Filtrar y ordenar por hora</span>
-                </div>
+    <div class="flex mt-20 pt-4 h-screen">
+        <div class="flex flex-col w-1/3 bg-gray-100 border-r border-gray-300">
+            <div class="px-4 py-3 bg-gray-200 border-b border-gray-300">
+                <h2 class="text-lg font-bold">Chats</h2>
             </div>
-
-            <!-- Parte derecha: Conversación -->
-            <div class="flex-1 flex flex-col bg-gray-50">
-                <!-- Encabezado de la conversación -->
-                <div class="px-4 py-3 bg-gray-200 border-b border-gray-300">
-                    <h2 class="text-lg font-bold">Nombre del chat</h2>
-                </div>
-                <!-- Cuerpo de la conversación -->
-                <div class="flex-1 overflow-y-auto px-4 py-2">
-                    <!-- Aquí va el contenido de la conversación -->
-                    <div class="flex flex-col mb-2">
-                        <div class="bg-blue-500 text-white rounded-lg p-2 max-w-xs">
-                            <p>Mensaje de ejemplo</p>
-                            <div class="text-xs text-gray-300">Hora del mensaje</div>
-                        </div>
-                        <!-- Otro mensaje -->
-                        <div class="bg-gray-300 text-gray-800 rounded-lg p-2 max-w-xs self-end mt-2">
-                            <p>Otro mensaje de ejemplo más largo</p>
-                            <div class="text-xs text-gray-500">Hora del mensaje</div>
-                        </div>
+            <div class="overflow-y-auto">
+                <div v-for="chat in chats" :key="chat.uuid" class="px-4 py-3 hover:bg-green-200 cursor-pointer" @click="selected = true;
+                chatSelected = chat;
+                ">
+                    <div class="font-bold">{{ chat.name }}</div>
+                    <div class="text-sm text-gray-500">
+                        {{ messageLastMessage(chat.lastMessage) }}
+                    </div>
+                    <div class="text-xs text-gray-400">
+                        {{
+                            chat.lastMessage?.createdAt.split('T')[1].split('.')[0].slice(0, 5)
+                        }}
                     </div>
                 </div>
-                <!-- Pié de la conversación -->
-                <div class="px-4 py-3 bg-gray-200 border-t border-gray-300 relative">
-                    <input type="text" placeholder="Escribe un mensaje..."
-                        class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500">
-                    <!-- Iconos de grabar audio , enviar mensaje y adjuntar archivo 
-          -->
-                    <div class="absolute right-0 bottom-0 flex items-center space-x-2">
-                        <button class="p-2 rounded-full bg-gray-300 hover:bg-gray-400">
-                            <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 14c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 21v-2a7.002 7.002 0 0 0-7-7H7a7.002 7.002 0 0 0-7 7v2"></path>
-                            </svg>
-                        </button>
-                        <button class="p-2 rounded-full bg-gray-300 hover:bg-gray-400">
-                            <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 12a9 9 0 0 1-9 9c-4.97 0-9-4.03-9-9s4.03-9 9-9a9 9 0 0 1 9 9z"></path>
-                                <circle cx="12" cy="12" r="3"></circle>
-                            </svg>
-                        </button>
-                        <button class="p-2 rounded-full bg-gray-300 hover:bg-gray-400">
-                            <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-line cap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
             </div>
         </div>
-    </template>
 
-    <style scoped></style>
+        <div class="flex-1 flex flex-col bg-gray-50" v-if="!selected">
+            <div class="flex-1 flex flex-col items-center justify-start mt-10">
+                <h1 class="text-2xl font-bold text-green-600">Selecciona un chat</h1>
+            </div>
+        </div>
+        <div v-else class="w-full">
+            <ChatsUser :nameChannel="chatSelected?.name" :uuid="chatSelected?.uuid" />
+        </div>
+
+    </div>
 </template>
 
-<style scoped>
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { io, Socket } from 'socket.io-client';
+import { getChannels } from '@/api/index';
+import { useAuthStore } from '@/stores/useAuthStore';
+import headerComponent from '@/components/layout/headerComponent.vue';
+import { storeToRefs } from 'pinia';
+import ChatsUser from './ChatsUser.vue';
 
+const { user } = storeToRefs(useAuthStore());
+
+interface UserMongo {
+    _id: string;
+    name: string;
+    uuid: string;
+}
+interface Message {
+    _id: string;
+    user: string;
+    channel: string;
+    message: string;
+    read: boolean;
+    sent: boolean;
+    delivered: boolean;
+    edited: boolean;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+}
+
+interface Channel {
+    _id: string;
+    uuid: string;
+    name: string;
+    participants: UserMongo[];
+    active: boolean;
+    lastMessage: Message;
+    __v: number;
+}
+
+const chats = ref<Channel[]>([]);
+const socket = ref<Socket | null>(null);
+const selected = ref<boolean>(false);
+const chatSelected = ref<Channel>({
+    _id: '',
+    uuid: '',
+    name: '',
+    participants: [],
+    active: false,
+    lastMessage: {
+        _id: '',
+        user: '',
+        channel: '',
+        message: '',
+        read: false,
+        sent: false,
+        delivered: false,
+        edited: false,
+        createdAt: '',
+        updatedAt: '',
+        __v: 0
+    },
+    __v: 0
+});
+
+onMounted(() => {
+    socket.value = io(import.meta.env.VITE_APP_SERVER_CHAT_URL as string);
+
+    getChannels().then((res) => {
+        chats.value.slice(0, chats.value.length);
+        chats.value.push(...res.channels);
+
+        chats.value.forEach((chat) => {
+            socket.value?.emit('joinChannel', chat.uuid);
+        });
+    });
+
+
+    socket.value.on('lastMessage', (msg: any) => {
+        chats.value.forEach((chat) => {
+            console.log(chat)
+            if (chat.uuid === msg.channel) {
+                chat.lastMessage = msg;
+            }
+        });
+    });
+});
+
+const messageLastMessage = (lastMessage: Message | undefined) => {
+    const isUser = lastMessage?.user === user.value?.uuid ? 'Tú: ' : '';
+    return `${isUser}${lastMessage?.message}`;
+};
+</script>
+
+<style scoped>
+.chat-list {
+    overflow-y: auto;
+    max-height: calc(100vh - 100px);
+}
+
+.message-list {
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+}
+
+.message-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.message-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.message-list::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 3px;
+}
+
+.message-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 </style>

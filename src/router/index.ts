@@ -56,13 +56,22 @@ const router = createRouter({
       },
       component: () => import('@/views/DashboardView.vue')
     }, {
-      path: 'chat',
+      path: '/chat',
       name: 'chat',
       meta:{
         title: 'Chat',
         requiresAuth: true
       },
       component: () => import('@/views/ChatsView.vue')
+    },
+    {
+      path: '/chat/:uuid',
+      name: 'chat-channel',
+      meta:{
+        title: 'Chat',
+        requiresAuth: true
+      },
+      component: () => import('@/views/ChatsUser.vue'),
     }
   ]
 })
