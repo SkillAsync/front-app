@@ -24,7 +24,7 @@
 
                             <div class="bg-white/90 rounded-full w-6 h-6 text-center ml-28 mt-4">
 
-                                <input type="file" name="profile" id="upload_profile" hidden required>
+                            <input type="file" name="profile" id="upload_profile" hidden required @change="handleFileUpload">
 
                                 <label for="upload_profile">
                                         <svg data-slot="icon" class="w-6 h-5 text-blue-700" fill="none"
@@ -67,13 +67,13 @@
                     </h2>
                     <div class="flex lg:flex-row md:flex-col sm:flex-col xs:flex-col gap-2 justify-center w-full">
                         <div class="w-full  mb-4 mt-6">
-                            <label for="" class="mb-2 dark:text-gray-300">{{ user.value.first_name }}</label>
+                            <label for="" class="mb-2 dark:text-gray-300">Nombre</label>
                             <input type="text"
                                     class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
-                                    :placeholder="user.value.first_name">
+                                    :placeholder="user.value.first_name" :value="inputs[0].name">
                         </div>
                         <div class="w-full  mb-4 lg:mt-6">
-                            <label for="" class=" dark:text-gray-300">{{user.value.last_name}}</label>
+                            <label for="" class=" dark:text-gray-300">Apellidos</label>
                             <input type="text"
                                     class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
                                     :placeholder="user.value.last_name">
@@ -81,13 +81,13 @@
                     </div>
                     <div class="flex lg:flex-row md:flex-col sm:flex-col xs:flex-col gap-2 justify-center w-full">
                         <div class="w-full  mb-4 mt-6">
-                            <label for="" class="mb-2 dark:text-gray-300">{{ user.value.email }}</label>
+                            <label for="" class="mb-2 dark:text-gray-300">Correo Electronico</label>
                             <input type="text"
                                     class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
                                     :placeholder="user.value.email">
                         </div>
                         <div class="w-full  mb-4 lg:mt-6">
-                            <label for="" class=" dark:text-gray-300">{{user.value.phone}}</label>
+                            <label for="" class=" dark:text-gray-300">Numero de telefono</label>
                             <input type="text"
                                     class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
                                     :placeholder="user.value.phone">
@@ -96,13 +96,13 @@
 
                     <div class="flex lg:flex-row md:flex-col sm:flex-col xs:flex-col gap-2 justify-center w-full">
                         <div class="w-full  mb-4 mt-6">
-                            <label for="" class="mb-2 dark:text-gray-300">{{ user.value.city }}</label>
+                            <label for="" class="mb-2 dark:text-gray-300">Ciudad</label>
                             <input type="text"
                                     class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
                                     :placeholder="user.value.city">
                         </div>
                         <div class="w-full  mb-4 lg:mt-6">
-                            <label for="" class=" dark:text-gray-300">{{user.value.bio}}</label>
+                            <label for="" class=" dark:text-gray-300">Biografia</label>
                             <input type="text"
                                     class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
                                     :placeholder="user.value.bio">
@@ -114,19 +114,19 @@
                             <h3 class="dark:text-gray-300 mb-2">Sex</h3>
                             <select
                                     class="w-full text-grey border-2 rounded-lg p-4 pl-2 pr-2 dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800">
-                                    <option disabled value="">Select Sex</option>
+                                    <option disabled value="">Select</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </select>
                         </div>
                         <div class="w-full">
-                            <h3 class="dark:text-gray-300 mb-2">Date Of Birth</h3>
+                            <h3 class="dark:text-gray-300 mb-2">Fecha de Nacimiento</h3>
                             <input type="date"
                                     class="text-grey p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800">
                         </div>
                     </div>
                     <div class="w-full rounded-lg bg-green-700 mt-4 text-white text-lg font-semibold">
-                        <button type="submit" class="w-full p-4">Submit</button>
+                        <button type="submit" class="w-full p-4">Update Profile</button>
                     </div>
                 </form>
             </div>
@@ -141,15 +141,78 @@
   import { ref } from 'vue';
   import headerComponent from '@/components/layout/headerComponent.vue';
   import footerComponent from '@/components/layout/footerComponent.vue';
-  import { useMe } from '@/graphql/querys/useGetMe';
+import { useMe } from '@/graphql/querys/useGetMe';
+import { useMutateUpdateUser } from '@/graphql/mutations/user/useMutateUpdateUser';
+import type { objectInput } from '@/types/objectInput';
 
   // Variables
-  const user = ref<any>();
+const user = ref<any>();
+const { updateUser, onError } = useMutateUpdateUser()
+
+
 
   const { me, loading, error } = useMe();
   if (me) {
     user.value = me
-  }
+}
+
+
+onError(({ graphQLErrors }) => {
+    graphQLErrors.forEach((err) => {
+        console.error(err.message);
+    });
+});
+
+const inputs: Array<objectInput> = [
+    {
+        type: 'text',
+        name: 'first_name',
+        placeholder: 'Nombre',
+        label: 'Nombre',
+    },
+    {
+        type: 'text',
+        name: 'email',
+        placeholder: 'Correo',
+        label: 'Correo',
+    },
+    {
+        type: 'password',
+        name: 'password',
+        placeholder: 'Contraseña',
+        label: 'Contraseña',
+    },
+    {
+        type: 'text',
+        name: 'last_name',
+        placeholder: 'Apellidos',
+        label: 'Apellidos',
+    },
+    {
+        type: 'text',
+        name: 'phone',
+        placeholder: 'Numero de telefono',
+        label: 'Numero de telefono',
+    },
+    {
+        type: 'text',
+        name: 'city',
+        placeholder: 'Ciudad',
+        label: 'Ciudad',
+    },
+    {
+        type: 'text',
+        name: 'bio',
+        placeholder: 'Biografia',
+        label: 'Biografia',
+    },
+    {
+        type: 'file',
+        name: 'avatar',
+        placeholder: 'Imagen',
+        label: 'Imagen',
+    }
+]
 
 
   
@@ -169,8 +232,9 @@
   function handleFileUpload(event: Event) {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files[0]) {
-      selectedFile.value = target.files[0];
-      convertToBase64(selectedFile.value);
+        selectedFile.value = target.files[0];
+        convertToBase64(selectedFile.value);
+       
     }
   }
   
@@ -178,19 +242,31 @@
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      base64Image.value = reader.result as string;
+        base64Image.value = reader.result as string;
+       console.log(base64Image.value);
     };
     reader.onerror = (error) => {
       console.error('Error: ', error);
     };
-  }
+}
+//   console.log(inputs[0].name);
   
   function submitFile() {
     console.log(base64Image.value);
   }
   </script>
   
-  <style scoped></style>
-  
+  <style scoped>
+ input::placeholder {
+        color: #29680c;
+        opacity: 1; /* Firefox */
+    }
 
-  
+    input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #29680c;
+    }
+
+    input::-ms-input-placeholder { /* Microsoft Edge */
+        color: #29680c;
+    }
+</style>
