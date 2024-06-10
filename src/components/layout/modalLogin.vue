@@ -57,8 +57,8 @@ const loginFunction = async (data: object) => {
 
         router.push({ name: 'dashboard' })
         
-    } catch (error) {
-        console.error(error);
+    } catch (_error) {
+        error.value = 'Ha ocurrido un problema, intente de nuevo'
     }
 }
 

@@ -11,6 +11,8 @@ const { showModal: openLogin, toggleModalState: toogleButtonLogin } = useModal()
 interface itemNav {
     title: string;
     url: string;
+    class?: string;
+    icon?: string;
 }
 
 const itemsNav = ref<itemNav[]>([
@@ -18,6 +20,21 @@ const itemsNav = ref<itemNav[]>([
     { title: 'Freelancers', url: '/freelancers' },
     { title: 'Contacto', url: '#' },
     { title: 'Nosotros', url: '/about' },
+]);
+
+const itemsUser = ref<itemNav[]>([
+    {
+        title: 'Perfil',
+        url: '/perfil',
+        icon: 'fas fa-user',
+        class: 'text-white hover:shadow-lg hover:bg-green-900 rounded-lg px-2 py-2 transition duration-300'
+    },
+    {
+        title: 'Chat',
+        url: '/chat',
+        icon: 'fas fa-comments',
+        class: 'text-white hover:shadow-lg hover:bg-green-900 rounded-lg px-2 py-2 transition duration-300'
+    },
 ]);
 
 const token = localStorage.getItem('access_token')
@@ -61,11 +78,9 @@ const logout = () => {
                     </button>
                 </div>
                 <div class="flex items-center space-x-2" v-else>
-                    <RouterLink to="/perfil"
-                        class="text-white hover:shadow-lg hover:bg-green-900 rounded-lg px-2 py-2 transition duration-300 ">
-                        <font-awesome-icon :icon="['fas', 'user']" />
-                        <i class="fas fa-user mx-2"></i>
-                        Perfil
+                    <RouterLink v-for="item in itemsUser" :key="item.title" :to="item.url" :class="item.class">
+                        <i v-if="item.icon" :class="item.icon"></i>
+                        {{ item.title }}
                     </RouterLink>
                     <button @click="logout"
                         class="px-4 py-2 text-white transition duration-500 ease-out rounded-lg border border-white hover:bg-green-900"
