@@ -55,13 +55,15 @@ const loginFunction = async (data: object) => {
         localStorage.setItem('access_token', access_token)
         localStorage.setItem('user', JSON.stringify(user))
 
-        router.push({ name: 'dashboard' })
-        
+        // Mostrar mensaje de bienvenida
+        alert('Bienvenido a tu perfil')
+
+        // Redirigir al perfil
+        router.push({ name: 'perfil' })        
     } catch (_error) {
         error.value = 'Ha ocurrido un problema, intente de nuevo'
     }
 }
-
 </script>
 
 <template>

@@ -25,14 +25,15 @@ watchEffect(() => {
 
 <template>
     <headerComponent />
+    <div class="margin-top-100">
     <buscadorComponent></buscadorComponent>
+    </div>
     <div class="p-4">
         <p class="text-3xl font-bold text-gray-400">
             Lista de freelancers
         </p>
     </div>
     <h1>
-
       {{ currentPage }}
     </h1>
     <main class="bg-gray-100 flex items-start justify:start min-h-screen p-4">
@@ -49,3 +50,9 @@ watchEffect(() => {
         ></paginadorComponent>
     </main>
 </template>
+
+<style scoped>
+.margin-top-100 {
+    margin-top: 100px;
+}
+</style>
