@@ -13,7 +13,7 @@
                     Profile
                 </h1>
                 <h2 class="text-grey text-sm mb-4 dark:text-gray-400">Create Profile</h2>
-                <form>
+                <form  @submit.prevent="updateProfile">
                     <!-- Cover Image -->
                     <div
                         class="w-full rounded-sm bg-[url('https://images.unsplash.com/photo-1449844908441-8829872d2607?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw2fHxob21lfGVufDB8MHx8fDE3MTA0MDE1NDZ8MA&ixlib=rb-4.0.3&q=80&w=1080')] bg-cover bg-center bg-no-repeat items-center">
@@ -42,7 +42,7 @@
                         </div>
                         <div class="flex justify-end">
                             <!--  -->
-                            <input type="file" name="profile" id="upload_cover" hidden required>
+                            <!-- <input type="file" name="profile" id="upload_cover" hidden required> -->
 
                             <div
                                 class="bg-white flex items-center gap-1 rounded-tl-md px-2 text-center font-semibold">
@@ -65,18 +65,22 @@
                     </div>
                     <h2 class="text-center mt-1 font-semibold dark:text-gray-300">Upload Profile and Cover Image
                     </h2>
+                    <!-- Profile Image -->
+                    <div v-for="(input, index) in inputs" :key="index" class="mt-4">
+                    
+                    </div>
                     <div class="flex lg:flex-row md:flex-col sm:flex-col xs:flex-col gap-2 justify-center w-full">
                         <div class="w-full  mb-4 mt-6">
                             <label for="" class="mb-2 dark:text-gray-300">Nombre</label>
                             <input type="text"
                                     class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
-                                    :placeholder="user.value.first_name" :value="inputs[0].name">
+                                    :placeholder="user.value.first_name" v-model="name">
                         </div>
                         <div class="w-full  mb-4 lg:mt-6">
                             <label for="" class=" dark:text-gray-300">Apellidos</label>
                             <input type="text"
                                     class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
-                                    :placeholder="user.value.last_name">
+                                    :placeholder="user.value.last_name" v-model="lastname">
                         </div>
                     </div>
                     <div class="flex lg:flex-row md:flex-col sm:flex-col xs:flex-col gap-2 justify-center w-full">
@@ -84,13 +88,13 @@
                             <label for="" class="mb-2 dark:text-gray-300">Correo Electronico</label>
                             <input type="text"
                                     class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
-                                    :placeholder="user.value.email">
+                                    :placeholder="user.value.email" v-model="email">
                         </div>
                         <div class="w-full  mb-4 lg:mt-6">
                             <label for="" class=" dark:text-gray-300">Numero de telefono</label>
                             <input type="text"
                                     class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
-                                    :placeholder="user.value.phone">
+                                    :placeholder="user.value.phone" v-model="phone">
                         </div>
                     </div>
 
@@ -99,13 +103,13 @@
                             <label for="" class="mb-2 dark:text-gray-300">Ciudad</label>
                             <input type="text"
                                     class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
-                                    :placeholder="user.value.city">
+                                    :placeholder="user.value.city" v-model="city">
                         </div>
                         <div class="w-full  mb-4 lg:mt-6">
                             <label for="" class=" dark:text-gray-300">Biografia</label>
                             <input type="text"
                                     class="mt-2 p-4 w-full border-2 rounded-lg dark:text-gray-200 dark:border-gray-600 dark:bg-gray-800"
-                                    :placeholder="user.value.bio">
+                                    :placeholder="user.value.bio" v-model="bio">
                         </div>
                     </div>
 
@@ -126,7 +130,7 @@
                         </div>
                     </div>
                     <div class="w-full rounded-lg bg-green-700 mt-4 text-white text-lg font-semibold">
-                        <button type="submit" class="w-full p-4">Update Profile</button>
+                        <button type="submit" class="w-full p-4" @click="updateProfile">Actualizar Perfil</button>
                     </div>
                 </form>
             </div>
@@ -145,17 +149,15 @@ import { useMe } from '@/graphql/querys/useGetMe';
 import { useMutateUpdateUser } from '@/graphql/mutations/user/useMutateUpdateUser';
 import type { objectInput } from '@/types/objectInput';
 
+
   // Variables
 const user = ref<any>();
 const { updateUser, onError } = useMutateUpdateUser()
+const { me, loading, error } = useMe();
 
-
-
-  const { me, loading, error } = useMe();
   if (me) {
-    user.value = me
+    user.value = me;
 }
-
 
 onError(({ graphQLErrors }) => {
     graphQLErrors.forEach((err) => {
@@ -214,59 +216,74 @@ const inputs: Array<objectInput> = [
     }
 ]
 
-
-  
-
-
-
-  // Metodos
-
-
-
-  
   // Variables reactivas
-  const selectedFile = ref<File | null>(null);
-  const base64Image = ref<string>('');
-  
-  // Métodos
-  function handleFileUpload(event: Event) {
+const selectedFile = ref<File | null>(null);
+const base64Image = ref<string>('');
+const name = ref<string>('');
+const lastname = ref<string>('');
+const email = ref<string>('');
+const phone = ref<string>('');
+const city = ref<string>('');
+const bio = ref<string>('');
+
+function handleFileUpload(event: Event) {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files[0]) {
         selectedFile.value = target.files[0];
         convertToBase64(selectedFile.value);
-       
     }
-  }
-  
-  function convertToBase64(file: File) {
+}
+const updateProfile = async () => {
+    const inputs = {
+        first_name: name.value || user.value.first_name,
+        last_name: lastname.value || user.value.last_name,
+        email: email.value || user.value.email,
+        phone: phone.value || user.value.phone,
+        city: city.value || user.value.city,
+        bio: bio.value || user.value.bio,
+        avatar: base64Image.value || user.value.avatar
+    };
+
+    const filteredInputs = Object.fromEntries(
+        Object.entries(inputs).filter(([key, value]) => value !== '' && value !== null && value !== undefined)
+    );
+
+    try {
+        console.log('Inputs:1', filteredInputs);
+        console.log('Inputs:2', user.value.uuid);
+        const response = await updateUser(user.value.value.uuid, filteredInputs);
+        console.log('Usuario actualizado con éxito', response);
+    } catch (error) {
+        console.error('Error actualizando el usuario', error);
+    }
+};
+
+
+
+function convertToBase64(file: File) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
         base64Image.value = reader.result as string;
-       console.log(base64Image.value);
+        return base64Image.value
     };
     reader.onerror = (error) => {
-      console.error('Error: ', error);
+        console.error('Error: ', error);
     };
 }
-//   console.log(inputs[0].name);
-  
-  function submitFile() {
-    console.log(base64Image.value);
-  }
-  </script>
-  
-  <style scoped>
- input::placeholder {
+
+</script>
+
+<style scoped>
+input::placeholder {
         color: #29680c;
         opacity: 1; /* Firefox */
-    }
+}
 
-    input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+input:-ms-input-placeholder { /* Internet Explorer 10-11 */
         color: #29680c;
-    }
-
-    input::-ms-input-placeholder { /* Microsoft Edge */
+}
+input::-ms-input-placeholder { /* Microsoft Edge */
         color: #29680c;
-    }
+}
 </style>
