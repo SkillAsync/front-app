@@ -1,77 +1,90 @@
 <script setup lang="ts">
 import modalComponent from '@/components/shared/modalComponent.vue'
-import { useMutateLogin } from '@/graphql/mutations/useMutateLogin';
 import type { objectInput } from '@/types/objectInput';
+import { useMutateCreateService } from '@/graphql/mutations/useMutateCreateService'
 import { ref } from 'vue';
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
 
 const props = defineProps<{ open: boolean }>();
-const error = ref<string>('')
 
-const { login, onError } = useMutateLogin()
+const { createService, onError } = useMutateCreateService()
 
 onError(({ graphQLErrors }) => {
     graphQLErrors.forEach((err) => {
-        error.value = err.message; 
+        console.error(err.message);
+        error.value = err.message;
     });
 });
 
 const inputs: Array<objectInput> = [
     {
         type: 'text',
-        name: 'username',
-        placeholder: 'Correo',
-        label: 'Correo',
+        name: 'title',
+        placeholder: 'Título',
+        label: 'Título',
     },
     {
-        type: 'password',
-        name: 'password',
-        placeholder: 'Contraseña',
-        label: 'Contraseña',
+        type: 'text',
+        name: 'description',
+        placeholder: 'Descripción',
+        label: 'Descripción',
     },
+    {
+        type: 'float',
+        name: 'price',
+        placeholder: 'Precio',
+        label: 'Precio',
+    },
+    {
+        type: 'string',
+        name: 'image',
+        placeholder: 'Imagen',
+        label: 'Imagen',
+    }
 ]
 
 const emit = defineEmits(['closeModal']);
 const closeModal = () => emit('closeModal', props.open);
+const error = ref<string>('')
 
-const loginFunction = async (data: object) => {
+
+const register = async (data: object) => {
     try {
-        if (Object.values(data).some(value => !value.value.trim())) {
+        const { password_confirmation, ...rest } = data
+
+        if (Object.values(rest).some(value => !value.value.trim())) {
             error.value = 'Todos los campos son requeridos'
             return
         }
 
-        const dataTransform = Object.keys(data).reduce((acc, key) => {
-            acc[key] = data[key].value.trim()
+        if (rest.password.value.trim() !== password_confirmation.value.trim()) {
+            error.value = 'Las contraseñas no coinciden'
+            return
+        }
+
+        const dataTransform = Object.keys(rest).reduce((acc, key) => {
+            acc[key] = rest[key].value.trim()
             return acc
         }, {})
 
-        const response = await login(dataTransform)
 
-        const { data: { login: { access_token ,user } } } = response
+        await createUser(dataTransform)
+        closeModal()
 
-        localStorage.setItem('access_token', access_token)
-        localStorage.setItem('user', JSON.stringify(user))
-
-        // Mostrar mensaje de bienvenida
-        alert('Bienvenido a tu perfil')
-
-        // Redirigir al perfil
-        router.push({ name: 'perfil' })        
     } catch (_error) {
-        error.value = 'Ha ocurrido un problema, intente de nuevo'
+        console.error(error);
     }
 }
+
 </script>
 
 <template>
-    <modalComponent :error="error" header="Iniciar sesión" action="Iniciar sesión" action2="Registrarse"
-        :inputs="inputs" :open="props.open" image="src/assets/images/image-login.jpg" @closeModal="closeModal"
-        @handleSubmit="loginFunction" />
+    <modalComponent :error="error" header="Bievenido al registro de SkilAsync" action="Registrarse"
+        action2="Ya tengo una cuenta" :inputs="inputs" :open="props.open" image="/src/assets/images/image-register.jpg"
+        @closeModal="closeModal" @handleSubmit="register" />
+
+
 </template>
 
-<style lang="scss" scoped>
 
-</style>
+<style scoped></style>

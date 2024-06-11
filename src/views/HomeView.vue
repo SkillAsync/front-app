@@ -3,6 +3,11 @@ import BuscadorComponent from '@/components/layout/buscadorComponent.vue';
 import headerComponent from '@/components/layout/headerComponent.vue';
 import sectionPopularService from '@/components/layout/sectionPopularService.vue';
 import footerComponent from '@/components/layout/footerComponent.vue';
+import modalRegistrer from '@/components/layout/modalRegistrer.vue'
+import useModal from '@/composables/useModal';
+
+const { showModal: openRegister, toggleModalState: toogleButtonRegister } = useModal()
+
 </script>
 
 
@@ -10,6 +15,8 @@ import footerComponent from '@/components/layout/footerComponent.vue';
     <div>
         <headerComponent />
         <main>
+            <modalRegistrer :open="openRegister" @closeModal="toogleButtonRegister" />
+
             <section class="h-screen flex flex-col md:flex-row justify-between items-center bg-gray-100 px-8">
                 <div class="text-left md:w-1/2 space-y-4">
                     <h1 class="text-4xl font-bold">Encuentra Freelancers y Proyectos</h1>
@@ -40,7 +47,7 @@ import footerComponent from '@/components/layout/footerComponent.vue';
                         Encuentra freelancers y proyectos emocionantes. Conecta con
                         profesionales que pueden hacer realidad tus ideas.
                     </p>
-                    <button
+                    <button @click="toogleButtonRegister"
                         class="bg-white text-green-500 px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-gray-200 transition duration-300">
                         Regístrate ahora
                     </button>

@@ -2,7 +2,7 @@
  <headerComponent></headerComponent> 
     
     <!-- Poner condicional v-if para no mostrar si alguien no está logeado -->
-    <section class="py-10 my-auto dark:bg-gray-900">
+    <section class="py-10 my-auto dark:bg-gray-900 mt-20">
     <div class="lg:w-[80%] md:w-[90%] xs:w-[96%] mx-auto flex gap-4">
         <div
             class="lg:w-[88%] md:w-[80%] sm:w-[88%] xs:w-full mx-auto shadow-2xl p-4 rounded-xl h-fit self-center dark:bg-gray-800/40">

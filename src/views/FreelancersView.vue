@@ -26,33 +26,38 @@ watchEffect(() => {
 <template>
     <headerComponent />
     <div class="margin-top-100">
-    <buscadorComponent></buscadorComponent>
+        <buscadorComponent></buscadorComponent>
     </div>
     <div class="p-4">
         <p class="text-3xl font-bold text-gray-400">
             Lista de freelancers
         </p>
     </div>
-    <h1>
-      {{ currentPage }}
-    </h1>
-    <main class="bg-gray-100 flex items-start justify:start min-h-screen p-4">
+    <main class="bg-gray-100 flex flex-col items-start justify:start min-h-screen p-4">
         <loaderComponent :isLoading="loading" />
         <div v-if="error && !loading" class="w-full h-full flex flex-col items:center justify:center">
             <errorComponent to="/freelancers" messageRedirect="Reiniciar página"/>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full" v-else>
-            <freenlacerCard v-for="(service, index) in services" :key="index" :first_name="service.title" :image="service.image"  />
+            <freenlacerCard v-for="(service, index) in services" :key="index" :first_name="service.title" :image="service.image" />
         </div>
-        <paginadorComponent 
-          :paginatorInfo="paginatorInfo"
-          @update:page="updatePage"
-        ></paginadorComponent>
+        <div class="w-full flex justify-center mt-4">
+            <paginadorComponent 
+              :paginatorInfo="paginatorInfo"
+              @update:page="updatePage"
+            ></paginadorComponent>
+        </div>
     </main>
+            
+        <footerComponent />
+
 </template>
 
 <style scoped>
 .margin-top-100 {
     margin-top: 100px;
+}
+.mt-4 {
+    margin-top: 1rem;
 }
 </style>
