@@ -1,16 +1,6 @@
 import { useMutation } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
-
-interface CreateFreelancerInput {
-  user: {
-    connect: string
-  }
-  category: {
-    connect: string
-  }
-  description: string
-}
-
+import type { CreateFreelancerInput } from '@/types/CreateFreelancerInput'
 
 const CREATE_FREELACER_MUTATION = gql`
   mutation CreateFreelancer($input: CreataFreelancerForUserInput!) {

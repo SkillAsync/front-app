@@ -4,6 +4,9 @@ import { useMutateLogin } from '@/graphql/mutations/useMutateLogin';
 import type { objectInput } from '@/types/objectInput';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/useAuthStore';
+import Swal from 'sweetalert2'
+
 
 const router = useRouter()
 
@@ -52,11 +55,18 @@ const loginFunction = async (data: object) => {
 
         const { data: { login: { access_token ,user } } } = response
 
-        localStorage.setItem('access_token', access_token)
-        localStorage.setItem('user', JSON.stringify(user))
+        useAuthStore().setAccessToken(access_token)
+        useAuthStore().setUser(user)
+  
 
-        // Mostrar mensaje de bienvenida
-        alert('Bienvenido a tu perfil')
+        Swal.fire({
+            title: 'Bienvenido de nuevo',
+            text: `Bienvenido de nuevo, ${user.first_name}`,
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false,
+        })
+
 
         // Redirigir al perfil
         router.push({ name: 'perfil' })        

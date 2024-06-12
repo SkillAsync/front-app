@@ -8,4 +8,5 @@ export interface propsModal {
   action: string
   action2: string
   error: string
+  data_two?: object
 }

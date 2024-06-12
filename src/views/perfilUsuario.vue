@@ -7,9 +7,13 @@ import { useMe } from '@/graphql/querys/useGetMe';
 import { useMutateUpdateUser } from '@/graphql/mutations/user/useMutateUpdateUser';
 import type { objectInput } from '@/types/objectInput';
 import { watch } from 'vue';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { storeToRefs } from 'pinia';
 
 
-const user = ref<any>();
+const store = useAuthStore();
+const { user, accessToken: token } = storeToRefs(store);
+
 const { updateUser, onError } = useMutateUpdateUser()
 const { me, loading, error } = useMe();
 
@@ -20,8 +24,7 @@ onError(({ graphQLErrors }) => {
 });
 
 watch(() => me.value, (newValue) => {
-    user.value = newValue;
-    console.log(user.value)
+    store.setUser(newValue);
 }, {
     immediate: true,
     deep: true
@@ -138,7 +141,7 @@ function convertToBase64(file: File) {
     <div v-if="loading">
         <loaderComponent :isLoading="loading" />
     </div>
-    <section class="py-10 my-auto dark:bg-gray-900 mt-20" v-if="!loading && user ">
+    <section class="py-10 my-auto dark:bg-gray-900 mt-20 pt-20" v-if="!loading && user ">
         <div class="lg:w-[80%] md:w-[90%] xs:w-[96%] mx-auto flex gap-4">
             <div
                 class="lg:w-[88%] md:w-[80%] sm:w-[88%] xs:w-full mx-auto shadow-2xl p-4 rounded-xl h-fit self-center dark:bg-gray-800/40">
@@ -146,9 +149,11 @@ function convertToBase64(file: File) {
                 <div class="">
                     <h1
                         class="lg:text-3xl md:text-2xl sm:text-xl xs:text-xl font-extrabold mb-2 dark:text-white">
-                        Profile
+                    Bienvenido a tu perfil {{ user.first_name }} !
                     </h1>
-                    <h2 class="text-grey text-sm mb-4 dark:text-gray-400">Create Profile</h2>
+                    <h2 class="text-grey text-sm mb-4 dark:text-gray-400">
+
+                    </h2>
                     <form @submit.prevent="updateProfile">
                         <div
                             class="w-full rounded-sm bg-[url('https://images.unsplash.com/photo-1449844908441-8829872d2607?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw2fHxob21lfGVufDB8MHx8fDE3MTA0MDE1NDZ8MA&ixlib=rb-4.0.3&q=80&w=1080')] bg-cover bg-center bg-no-repeat items-center">
@@ -196,9 +201,6 @@ function convertToBase64(file: File) {
 
                             </div>
                         </div>
-                        <h2 class="text-center mt-1 font-semibold dark:text-gray-300">Upload Profile and Cover
-                            Image
-                        </h2>
                         <div class="flex lg:flex-row md:flex-col sm:flex-col xs:flex-col gap-2 justify-center w-full">
                             <div class="w-full  mb-4 mt-6">
                                 <label for="" class="mb-2 dark:text-gray-300">Nombre</label>

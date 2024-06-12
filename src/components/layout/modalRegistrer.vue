@@ -3,6 +3,7 @@ import modalComponent from '@/components/shared/modalComponent.vue'
 import type { objectInput } from '@/types/objectInput';
 import { useMutateCreateUser } from '@/graphql/mutations/useMutateCreateUser'
 import { ref } from 'vue';
+import Swal from 'sweetalert2'
 
 
 const props = defineProps<{ open: boolean }>();
@@ -67,9 +68,19 @@ const register = async (data: object) => {
             return acc
         }, {})
 
-
         await createUser(dataTransform)
+
+        //Primera letra maysuucula
+        const name = dataTransform?.first_name.charAt(0).toUpperCase() + dataTransform?.first_name.slice(1)
         closeModal()
+
+        Swal.fire({
+            title: 'Bienvenido a SkillAsync',
+            html: `<p>Gracias por registrarte en SkillAsync, <strong>${name}</strong></p>`,
+            icon: 'success',
+            timer: 2000,
+            showConfirmButton: false,
+        })
 
     } catch (_error) {
         console.error(error);

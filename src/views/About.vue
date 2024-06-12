@@ -7,7 +7,7 @@ import footerComponent from '@/components/layout/footerComponent.vue';
   <div>
     <headerComponent />
 
-    <section class="bg-green-700 min-h-screen flex items-start pt-20">
+    <section class="bg-green-700 h-screen flex items-start pt-20">
       <div class="w-full ">
         <div class="container mx-auto px-4 py-16">
           <div class="max-w-4xl mx-auto text-left">

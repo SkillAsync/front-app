@@ -8,7 +8,7 @@ interface User {
 
 interface AuthState {
   accessToken: string
-  user: User | null
+  user: Any | null
 }
 
 export const useAuthStore = defineStore('auth', {

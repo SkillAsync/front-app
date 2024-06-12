@@ -6,6 +6,8 @@ import modalRegistrer from '@/components/layout/modalRegistrer.vue';
 import modalLogin from '@/components/layout/modalLogin.vue';
 import modalFreelancer from '@/components/layout/modalFreelancer.vue';
 import { useMe } from '@/graphql/querys/useGetMe';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { storeToRefs } from 'pinia';
 
 const { showModal: openRegister, toggleModalState: toogleButtonRegister } = useModal();
 const { showModal: openLogin, toggleModalState: toogleButtonLogin } = useModal();
@@ -17,6 +19,10 @@ interface itemNav {
     class?: string;
     icon?: string;
 }
+
+const store = useAuthStore();
+const { user, accessToken: token } = storeToRefs(store);
+
 
 const itemsNav = ref<itemNav[]>([
     { title: 'Inicio', url: '/' },
@@ -44,9 +50,6 @@ const itemsDropdown = ref<itemNav[]>([
     { title: 'Cerrar sesión', url: '/logout' },
 ]);
 
-const token = localStorage.getItem('access_token');
-
-const user = ref<any>(null);
 const { me, loading, error } = useMe();
 
 const logout = () => {
@@ -63,7 +66,7 @@ const toggleDropdown = () => {
 
 watchEffect(() => {
     if (me.value) {
-        user.value = me.value;
+        store.setUser(me.value);
     }
 });
 </script>
@@ -83,7 +86,7 @@ watchEffect(() => {
                     class="text-white hover:shadow-lg hover:bg-green-900 rounded-lg px-2 py-2 transition duration-300">
                     {{ item.title }}
                 </RouterLink>
-                <div class="flex items-center space-x-2" v-if="!token">
+                <div class="flex items-center space-x-2" v-if="!user">
                     <button @click="toogleButtonLogin"
                         class="px-4 py-2 text-white transition duration-500 ease-out rounded-lg hover:bg-green-900 hover:text-green-90"
                         type="button">
@@ -122,7 +125,7 @@ watchEffect(() => {
                                 <RouterLink v-for="item in itemsUser" :key="item.title" :to="item.url">
                                     <a v-if="item.icon"
                                         class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{
-                                        item.title }}</a>
+                                            item.title }}</a>
                                 </RouterLink>
                             </li>
                             <li @click="toogleButtonFreelancer">

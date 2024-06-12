@@ -7,7 +7,7 @@ const props = defineProps<propsModal>();
 
 const emit = defineEmits(['closeModal', 'handleSubmit']);
 const closeModal = () => emit('closeModal', props.open);
-const data = buildObject(props?.inputs ?? [])
+const data = props?.inputs ? buildObject(props?.inputs ?? []) : props.data_two ?? {};
 
 const handleSubmit = () => emit('handleSubmit', data);
 </script>
@@ -40,6 +40,8 @@ const handleSubmit = () => emit('handleSubmit', data);
                         role="alert">
                         <span class="block sm:inline">{{ props.error }}</span>
                     </div>
+                    <slot name="header"></slot>
+
                     <form @submit.prevent="handleSubmit">
                         <div v-for="(input, index) in inputs" :key="index" class="mt-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2">{{ input.label }}</label>
@@ -49,7 +51,9 @@ const handleSubmit = () => emit('handleSubmit', data);
                                 v-model="data[input.name].value"
                                 >
                         </div>
-                        <slot></slot>
+                        <slot
+                            name="customInputs"
+                        ></slot>
                         <div class="mt-8">
                             <button
                                 class="bg-green-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-green-600"
