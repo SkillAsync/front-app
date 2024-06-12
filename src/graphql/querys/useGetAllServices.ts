@@ -26,6 +26,7 @@ export const useGetAllServices = (page: number) => {
           data {
             image
             user {
+              uuid
               first_name
             }
             category {

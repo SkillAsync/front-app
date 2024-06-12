@@ -10,9 +10,10 @@ const uuid : string = user.value?.uuid || ''
 
 const API_URL = import.meta.env.VITE_APP_SERVER_CHAT_URL
 
-export const createChannel = async (name, participants) => {
+export const createChannel = async (data : object) => {
   try {
-    const response = await axios.post(`${API_URL}/channels`, { name, participants })
+    const response = await axios.post(`${API_URL}/channels`, data)
+    console.log(response.data)
     return response.data
   } catch (error) {
     console.log('Hubo un error al crear el canal')

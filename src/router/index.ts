@@ -26,23 +26,22 @@ const router = createRouter({
       meta: {
         title: 'Servicio'
       },
-      component: ()=> import('@/views/servicioView.vue'),
-      props: (route) => ({ uuid: route.params.uuid})
-      
+      component: () => import('@/views/servicioView.vue'),
+      props: (route) => ({ uuid: route.params.uuid })
     },
     {
       path: '/perfil',
       name: 'perfil',
-      meta:{
+      meta: {
         title: 'Perfil',
         requiresAuth: true
       },
-      component: ()=>import ('@/views/perfilUsuario.vue')
+      component: () => import('@/views/perfilUsuario.vue')
     },
     {
       path: '/about',
       name: 'about',
-      meta:{
+      meta: {
         title: 'Acerca de nosotros'
       },
       component: () => import('@/views/About.vue')
@@ -50,24 +49,25 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      meta:{
+      meta: {
         title: 'Dashboard',
         requiresAuth: true
       },
       component: () => import('@/views/DashboardView.vue')
-    }, {
+    },
+    {
       path: '/chat',
       name: 'chat',
-      meta:{
+      meta: {        
         title: 'Chat',
         requiresAuth: true
       },
-      component: () => import('@/views/ChatsView.vue')
-    },
+      component: () => import('@/views/ChatsView.vue'),
+    }, 
     {
       path: '/chat/:uuid',
-      name: 'chat-channel',
-      meta:{
+      name: 'chat-uuid',
+      meta: {
         title: 'Chat',
         requiresAuth: true
       },

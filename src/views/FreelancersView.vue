@@ -39,7 +39,7 @@ watchEffect(() => {
             <errorComponent to="/freelancers" messageRedirect="Reiniciar página"/>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full" v-else>
-            <freenlacerCard v-for="(service, index) in services" :key="index" :first_name="service.title" :image="service.image" />
+            <freenlacerCard v-for="(service, index) in services" :key="index" :first_name="service.title" :image="service.image" :uuid="service.user.uuid" />
         </div>
         <div class="w-full flex justify-center mt-4">
             <paginadorComponent 
