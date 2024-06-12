@@ -9,7 +9,6 @@ import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 
 const { user } = storeToRefs(useAuthStore());
-console.log(user.value.uuid)
 
 interface categoriesInterface {
     uuid: string;
@@ -24,7 +23,7 @@ const { categories, loading } = useGetAllCategories(); // Aquí asumo que tu hoo
 
 const data = ref<CreateFreelancerInput>({
     user: {
-        connect: user.value.uuid
+        connect: user?.value?.uuid 
     },
     category: {
         connect: ''
