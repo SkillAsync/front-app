@@ -3,4 +3,5 @@ export interface objectInput {
   type: string
   name: string
   placeholder: string
+  options?: Array<{ value: string; label: string }>
 }

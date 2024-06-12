@@ -4,11 +4,12 @@ import { RouterLink } from 'vue-router';
 import useModal from '@/composables/useModal';
 import modalRegistrer from '@/components/layout/modalRegistrer.vue'
 import modalLogin from '@/components/layout/modalLogin.vue'
+import modalFreelancer from '@/components/layout/modalFreelancer.vue'
 import { useMe } from '@/graphql/querys/useGetMe';
 
 const { showModal: openRegister, toggleModalState: toogleButtonRegister } = useModal()
 const { showModal: openLogin, toggleModalState: toogleButtonLogin } = useModal()
-
+const { showModal: openFreelancer, toggleModalState: toogleButtonFreelancer } = useModal()
 interface itemNav {
   title: string;
   url: string;
@@ -68,6 +69,7 @@ const toggleDropdown = () => {
 <template>
     <modalRegistrer :open="openRegister" @closeModal="toogleButtonRegister" />
     <modalLogin :open="openLogin" @closeModal="toogleButtonLogin" />
+    <modalFreelancer :open="openFreelancer" @closeModal="toogleButtonFreelancer" />
     <nav
         class="fixed inset-x-0 top-0 z-10 w-full px-8 py-2 bg-green-700 shadow-md border-b border-slate-500 transition duration-700 ease-out mr-20">
         <div class="flex justify-between items-center p-4">
@@ -129,7 +131,7 @@ const toggleDropdown = () => {
                                         item.title }}</a>
                                 </RouterLink>
                             </li>
-                            <li>
+                            <li  @click="toogleButtonFreelancer">
                                 <button
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                                     type="button">
