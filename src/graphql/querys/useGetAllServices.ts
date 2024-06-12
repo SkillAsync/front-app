@@ -28,6 +28,7 @@ export const useGetAllServices = (page: number) => {
             user {
               uuid
               first_name
+              avatar
             }
             category {
               name
