@@ -19,7 +19,10 @@ const updatePage = (page) => {
 }
 
 watchEffect(() => {
-    currentPage
+    if (services.value.length > 0) {
+        window.scrollTo(0, 0)
+    }
+
 })
 </script>
 
@@ -36,20 +39,18 @@ watchEffect(() => {
     <main class="bg-gray-100 flex flex-col items-start justify:start min-h-screen p-4">
         <loaderComponent :isLoading="loading" />
         <div v-if="error && !loading" class="w-full h-full flex flex-col items:center justify:center">
-            <errorComponent to="/freelancers" messageRedirect="Reiniciar página"/>
+            <errorComponent to="/freelancers" messageRedirect="Reiniciar página" />
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full" v-else>
-            <freenlacerCard v-for="(service, index) in services" :key="index" :first_name="service.title" :image="service.image" :uuid="service.user.uuid" />
+            <freenlacerCard v-for="(service, index) in services" :key="index" :first_name="service.title"
+                :image="service.image" :uuid="service.user.uuid" :description="service.description" />
         </div>
         <div class="w-full flex justify-center mt-4">
-            <paginadorComponent 
-              :paginatorInfo="paginatorInfo"
-              @update:page="updatePage"
-            ></paginadorComponent>
+            <paginadorComponent :paginatorInfo="paginatorInfo" @update:page="updatePage"></paginadorComponent>
         </div>
     </main>
-            
-        <footerComponent />
+
+    <footerComponent />
 
 </template>
 

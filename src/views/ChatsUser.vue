@@ -7,21 +7,17 @@ import { io, Socket } from 'socket.io-client';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { storeToRefs } from 'pinia';
 import type { Message } from '@/types/message';
-import { nextTick } from 'vue';
-
+import loaderComponent from '@/components/shared/loaderComponent.vue';
 
 const { user } = storeToRefs(useAuthStore());
 const router = useRouter();
-
-const channelId = ref(router.currentRoute.value.params.uuid)
+const loading = ref(false);
+const channelId = ref(router.currentRoute.value.params.uuid);
 const name = ref<string>('');
-
 
 const socket = ref<Socket | null>(null);
 const messages = ref<Message[]>([]);
 const newMessage = ref('');
-
-
 
 const sendMessage = () => {
     if (newMessage.value && socket.value) {
@@ -30,7 +26,6 @@ const sendMessage = () => {
             user: user.value?.uuid,
             message: newMessage.value
         });
-
         newMessage.value = '';
     }
 };
@@ -39,10 +34,10 @@ const groupMessagesByDate = (msgs: Message[]) => {
     const grouped: Record<string, Message[]> = {};
 
     msgs.forEach(msg => {
-        let date = new Date(msg.createdAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
-        const now = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })
+        let date = new Date(msg.createdAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+        const now = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
         if (date === now) {
-            date = 'Hoy'
+            date = 'Hoy';
         }
         if (!grouped[date]) {
             grouped[date] = [];
@@ -54,16 +49,16 @@ const groupMessagesByDate = (msgs: Message[]) => {
 };
 
 const groupedMessages = computed(() => groupMessagesByDate(messages.value));
-const refInput = ref<HTMLInputElement>(null);
 
 watchEffect(async () => {
-
+    loading.value = true;
     socket.value = io(import.meta.env.VITE_APP_SERVER_CHAT_URL as string);
     socket.value.emit('joinChannel', channelId.value);
 
     socket.value.on('channelMessages', (msgs: Message[]) => {
         messages.value = [];
         messages.value.push(...msgs);
+        loading.value = false;
     });
 
     socket.value.on('message', (msg: Message) => {
@@ -72,10 +67,7 @@ watchEffect(async () => {
 });
 
 watch(() => router.currentRoute.value.params.uuid, async (newValue: string) => {
-
-    await nextTick(() => {
-        refInput.value?.focus();
-    });
+    loading.value = true;
 
     await getChannels().then((res) => {
         res.channels.forEach((chat) => {
@@ -89,7 +81,6 @@ watch(() => router.currentRoute.value.params.uuid, async (newValue: string) => {
         });
     });
 
-
     channelId.value = newValue;
 
     socket.value?.emit('joinChannel', channelId.value);
@@ -99,14 +90,16 @@ watch(() => router.currentRoute.value.params.uuid, async (newValue: string) => {
     socket.value?.emit('getChannelMessages', (msgs: Message[]) => {
         messages.value = [];
         messages.value.push(...msgs);
-    })
+        loading.value = false;
+    });
 }, {
     immediate: true,
     deep: true
 });
 
-
-
+watchEffect(() => {
+    socket.value?.emit('joinChannel', channelId.value);
+});
 </script>
 
 
@@ -116,23 +109,27 @@ watch(() => router.currentRoute.value.params.uuid, async (newValue: string) => {
             <div class="px-4 py-3 bg-gray-200 border-b border-gray-300">
                 <h2 class="text-lg font-bold pt-4">{{ name }}</h2>
             </div>
-
             <div class="flex-1 overflow-y-auto px-4 py-2 message-list">
-                <div v-for="(msgs, date) in groupedMessages" :key="date" class="mb-4">
-                    <div class="text-center text-lg font-bold text-gray-600 mb-2">{{ date }}</div>
-                    <div v-for="msg in msgs" :key="msg._id" class="flex flex-col mb-2">
-                        <div :class="msg.user === user?.uuid ? 'bg-green-500 text-white ml-auto' : 'bg-gray-300 text-gray-800 mr-auto'"
-                            class="rounded-lg p-2 max-w-xs whitespace-pre-line">
-                            <p>{{ msg.message }}</p>
-                            <div class="text-md text-gray-100 text-time">{{
-                                msg.createdAt.split('T')[1].split('.')[0].slice(0, 5) }}</div>
+                <div v-if="loading" class="flex justify-center items-center h-full">
+                    <div class="loader"></div>
+                </div>
+                <div v-else>
+                    <div v-for="(msgs, date) in groupedMessages" :key="date" class="mb-4">
+                        <div class="text-center text-lg font-bold text-gray-600 mb-2">{{ date }}</div>
+                        <div v-for="msg in msgs" :key="msg._id" class="flex flex-col mb-2">
+                            <div :class="msg.user === user?.uuid ? 'bg-green-500 text-white ml-auto' : 'bg-gray-300 text-gray-800 mr-auto'"
+                                class="rounded-lg p-2 max-w-xs whitespace-pre-line">
+                                <p>{{ msg.message }}</p>
+                                <div class="text-md text-gray-100 text-time">{{
+                                    msg.createdAt.split('T')[1].split('.')[0].slice(0, 5) }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="flex items-center px-4 py-2 bg-gray-200 border-t border-gray-300">
                 <input ref="messageInput" v-model="newMessage" @keyup.enter="sendMessage" type="text"
-                    class="flex-1 p-2 border  border-gray-300 rounded-lg" placeholder="Escribe un mensaje" />
+                    class="flex-1 p-2 border border-gray-300 rounded-lg" placeholder="Escribe un mensaje" />
                 <button @click="sendMessage" class="px-4 py-2 bg-green-700 text-white rounded-lg ml-2">
                     Enviar
                 </button>
@@ -140,6 +137,7 @@ watch(() => router.currentRoute.value.params.uuid, async (newValue: string) => {
         </div>
     </ChatsView>
 </template>
+
 
 <style scoped>
 .chat-list {
@@ -150,5 +148,24 @@ watch(() => router.currentRoute.value.params.uuid, async (newValue: string) => {
 .message-list {
     overflow-y: auto;
     max-height: calc(100vh - 200px);
+}
+
+.loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #1ea033;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 </style>

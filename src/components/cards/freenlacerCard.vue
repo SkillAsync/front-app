@@ -13,6 +13,7 @@ interface Props {
     first_name: string,
     uuid: string,
     image: string
+    description: string
 }
 
 const data = defineProps<Props>();
@@ -26,7 +27,6 @@ onMounted(async () => {
 
 const goChannel = async (uuid: string) => {
     if (user.value) {
-        //Boolean que comprueba si dos participantes tienen un chat
         const chat = channel.value.find((chat) => {
             return chat.participants.some((participant) => {
                 return participant.uuid === uuid;
@@ -40,7 +40,7 @@ const goChannel = async (uuid: string) => {
                 uuid: uuidv4(),
                 participants: [{
                     uuid: user.value.uuid,
-                    name : user.value.first_name
+                    name: user.value.first_name
                 }, {
                     uuid: data.uuid,
                     name: data.first_name
@@ -65,15 +65,14 @@ const goChannel = async (uuid: string) => {
             <img :src="data.image" :alt="`Foto de ${first_name}`" class="w-24 h-24 rounded-full mr-4">
             <div>
                 <h2 class="text-xl font-bold text-gray-800">{{ first_name }}</h2>
-                <p class="text-gray-600">Freelancer | Web Developer</p>
+                <p class="text-gray-600"></p>
             </div>
         </div>
         <div class="mt-4 flex justify-between items-center">
-            <span class="text-gray-600 font-semibold">Skills:</span>
-            <div class="flex space-x-3">
-                <img src="https://via.placeholder.com/20" alt="JavaScript Icon" class="w-6 h-6">
-                <img src="https://via.placeholder.com/20" alt="Python Icon" class="w-6 h-6">
-            </div>
+            <span class="text-gray-600 font-semibold">
+                {{
+                    data.description
+                }}</span>
         </div>
         <div class="mt-4">
             <!--<p class="text-gray-600">{{ data.bio }}</p>-->
