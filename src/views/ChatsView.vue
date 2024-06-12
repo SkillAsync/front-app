@@ -60,7 +60,7 @@ watch(() => props.selected, (newValue: string) => {
 
 <template>
     <headerComponent />
-    <div class="flex h-full">
+    <div class="flex h-screen bg-gray-100">
         <div class="flex flex-col w-1/3 bg-gray-100 border-r border-gray-300 pt-20">
             <div class="px-4 py-3 bg-gray-200 border-b border-gray-300">
                 <h2 class="text-lg font-bold pt-4">Chats</h2>

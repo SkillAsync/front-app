@@ -1,13 +1,6 @@
 import { useMutation } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
 
-const CREATE_FREELACER_MUTATION = gql`
-  mutation CreateFreelancer($input: CreateFreelancerInput!) {
-    createFreelancer(input: $input) {
-      uuid
-    }
-  }
-`
 interface CreateFreelancerInput {
   user: {
     connect: string
@@ -18,18 +11,23 @@ interface CreateFreelancerInput {
   description: string
 }
 
+
+const CREATE_FREELACER_MUTATION = gql`
+  mutation CreateFreelancer($input: CreataFreelancerForUserInput!) {
+    createFreelancer(input: $input) {
+      uuid
+    }
+  }
+`
+
 export const useMutateCreateFreelacer = () => {
-  const { mutate: createFreelancer, onDone ,onError} = useMutation(CREATE_FREELACER_MUTATION)
+  const { mutate: createFreelancer, onDone, onError } = useMutation(CREATE_FREELACER_MUTATION)
 
-  const createFreelancerHandler = async (input: CreateFreelancerInput) => {
-    const response = await createFreelancer({ input })
-
-    return response
+  const create = async (input: CreateFreelancerInput) => {
+    await createFreelancer({ input })
+    
   }
 
-  return {
-    createFreelancer: createFreelancerHandler,
-    onDone,
-    onError
-  }
+  return { create, onDone, onError }
+
 }

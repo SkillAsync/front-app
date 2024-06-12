@@ -36,6 +36,7 @@ export const useGetAllServices = (page: number) => {
             title
             description
           }
+  
           paginatorInfo {
             count
             currentPage
@@ -54,7 +55,7 @@ export const useGetAllServices = (page: number) => {
 
   watchEffect(() => {
     if (result.value && !loading.value) {
-      services.value.slice(0, services.value.length)
+      services.value = []
       services.value.push(...result.value.getAllservices.data)
       paginatorInfo.value = result.value.getAllservices.paginatorInfo
       
