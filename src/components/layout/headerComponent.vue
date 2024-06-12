@@ -21,7 +21,7 @@ interface itemNav {
 const itemsNav = ref<itemNav[]>([
     { title: 'Inicio', url: '/' },
     { title: 'Servicios', url: '/freelancers' },
-    { title: 'Contacto', url: '#' },
+    { title: 'Contacto', url: '/contact' },
     { title: 'Nosotros', url: '/about' },
 ]);
 

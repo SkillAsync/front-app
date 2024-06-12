@@ -110,7 +110,8 @@ const { service, loading, error } = useGetService(uuid)
   justify-content: center;
   padding: 50px 0;
   width: 100vw;
-  margin-top:50px;
+  margin-top:80px;
+  margin-left:20px;
 }
 
 .service-card {
@@ -128,7 +129,7 @@ const { service, loading, error } = useGetService(uuid)
 }
 
 .service-image {
-  width: 100%;
+  width: 80%;
   height: auto;
   object-fit: cover;
 }
